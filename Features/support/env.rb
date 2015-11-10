@@ -20,7 +20,6 @@ Before do |scenario|
   debug_output("ORIENTATION = #{ ENV['ORIENTATION']}")
   debug_output("REBASE      = #{ ENV['REBASE']}")
   debug_output("ENVIRONMENT = #{ ENV['ENVIRONMENT']}")
-  
 
   start_browser(scenario)
 end
@@ -48,18 +47,6 @@ def start_browser(scenario)
       elsif ENV['BROWSER'].include? "browserstack"
         browser = start_browserstack
       end
-    #rescue Exception=>e
-    #  debug_output(e)
-    #  debug_output("got the exception")
-    #  debug_output(count.to_s)
-    #  debug_output("trying again")
-    #  debug_output("going to #sleep for between 0 and 180 seconds because i could not start the browser")
-    #  timeout = rand(60)
-    #  #sleep timeout
-    #  debug_output(timeout.to_s)
-    #  #sleep timeout
-    #  count = count + 1
-    #end
   end
   set_urls
   @browser = browser
@@ -70,7 +57,7 @@ After do |scenario|
     #takeFailedScenarioScreenshot(scenario)
   #end
 
-  @browser.close
+  #@browser.close
 end
 
 at_exit do
