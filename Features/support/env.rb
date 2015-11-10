@@ -57,6 +57,8 @@ After do |scenario|
     #takeFailedScenarioScreenshot(scenario)
   #end
 
+  remove_added_addresses
+  empty_basket
   #@browser.close
 end
 

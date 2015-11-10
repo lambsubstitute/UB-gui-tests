@@ -14,6 +14,9 @@ Feature: add product to basket
     And I enter the address "something something something"
    #   And click continue
 
+  Scenario: test empty basket clean up method
+    Given I empty the basket
+
 
 
 
