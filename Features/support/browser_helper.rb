@@ -140,18 +140,18 @@ end
 
 def set_phone_orientation()
   #browser_width overrides are required to set chrome up properly as there is a bug in the user agent on resizing
-  #@mobile_mode = true
- # if ENV['BROWSER'].include? "chrome"
- #   debug_output("setting chrome height and width overrides")
- #   if ENV['ORIENTATION'] == "landscape"
- #     debug_output("setting landscape for phone")
- #     @browser_width = 480
- #   elsif ENV['ORIENTATION'] == "portrait"
- #     debug_output("setting portrait for phone")
- #     @browser_width = 320
- #   end
-  #  @browser_height = 3200
- # end
+  @mobile_mode = true
+  if ENV['BROWSER'].include? "chrome"
+    debug_output("setting chrome height and width overrides")
+    if ENV['ORIENTATION'] == "landscape"
+      debug_output("setting landscape for phone")
+      @browser_width = 480
+    elsif ENV['ORIENTATION'] == "portrait"
+      debug_output("setting portrait for phone")
+      @browser_width = 320
+    end
+   @browser_height = 800
+  end
 end
 
 
