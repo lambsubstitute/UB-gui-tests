@@ -40,8 +40,9 @@ end
 def login_with_phone_number(phnone_no)
   @browser.link(:id, 'checkout').wait_until_present
   @browser.span(:text, '+ Add Personal Info').wait_until_present
+  sleep 1
   @browser.send_keys :space
-
+  @browser.send_keys :space
 
   @browser.span(:text, '+ Add Personal Info').click
   @browser.input(:id, 'email').wait_until_present
@@ -72,6 +73,8 @@ And(/^I enter the address "(.*)"$/) do |arg|
 
 
   @browser.send_keys :space
+  @browser.send_keys :space
+  sleep 0.5
 
   @browser.span(:text, '+ Add Delivery Address').click
   @browser.text_field(:id, 'firstname').wait_until_present
@@ -96,26 +99,39 @@ Given(/^I empty the basket$/) do
 end
 
 def remove_added_addresses
- # @browser.div(:id, 'ub-loading-indicator').wait_while_present
- # @browser.span(:text, '+ Add Delivery Address').wait_until_present
- # @browser.span(:text, '+ Add Delivery Address').click
-
-  @browser.goto(@base_url + 'basket/chooseaddress')
-  @browser.div(:class, 'ub-page').wait_until_present
-  sleep 1
-  address_links = Array.new
-  @browser.links.each do |link|
-    if link.attribute_value('class') == 'ub-list-action'
-      address_links.push(link.href)
+  delivery_div = nil
+  @browser.divs.each do |div|
+    if div.label(:text,'Delivery').exist?
+      delivery_div = div
     end
   end
 
-  address_links.each do |address|
-    puts address
-    @browser.goto(address)
-    @browser.link(:text, 'Delete address').wait_until_present
-    @browser.link(:text, 'Delete address').click
+puts 'removing addresses'
+  begin
+    @browser.div(:id, 'ub-loading-indicator').wait_while_present
+    @browser.send_keys :space
+    @browser.send_keys :space
+
+    delivery_div.div(:text,/Auatomation Evangalist/).click
+    @browser.div(:class, 'ub-page').wait_until_present
+    sleep 1
+    address_links = Array.new
+    @browser.links.each do |link|
+      if link.attribute_value('class') == 'ub-list-action'
+        address_links.push(link.href)
+      end
+    end
+
+    address_links.each do |address|
+      @browser.goto(address)
+      @browser.link(:text, 'Delete address').wait_until_present
+      @browser.link(:text, 'Delete address').click
+    end
+  rescue
   end
+  @browser.goto(@base_url)
+
+  puts 'finished removintg addresses'
 end
 
 def empty_basket
@@ -123,27 +139,51 @@ def empty_basket
   @browser.div(:id, 'ub-basket-contents').wait_until_present
 
   while (@browser.text.include? "You haven't added anything to your basket.") == false
+
     @browser.div(:id, 'ub-loading-indicator').wait_while_present
     exit_flag = false
     @browser.links.each do |link|
       break if exit_flag == true
-      if (link.attribute_value('class') == 'remove-item needsclick') && (exit_flag == false)
-        link.click
-        exit_flag = true
+      if exit_flag == false
+        if (link.attribute_value('class') == 'remove-item needsclick') && (link.visible? == true)
+          link.click
+          exit_flag = true
+          @browser.div(:id, 'ub-loading-indicator').wait_while_present
+        end
       end
     end
+    @browser.goto(@base_url + 'basket')
   end
 end
 
 def remove_saved_cards
-  @browser.link(:href,   /choosecard/).wait_until_present
-  @browser.link(:href, /choosecard/).click
-  @browser.links.each do |link|
-    if link.attribute_value('class') == 'ub-list-action'
-      link.click
-      @browser.div(:id, 'ub-loading-indicator').wait_while_present
+  payments_div = nil
+  @browser.divs.each do |div|
+    if div.label(:text,'Payment').exist?
+     # puts 'found master payments div'
+      payments_div = div
+      #puts payments_div.text
     end
   end
+
+
+  puts "removing saved cards"
+  @browser.send_keys :space
+  @browser.send_keys :space
+  if payments_div.span(:text, /1111/).present?
+    payments_div.span(:text, /1111/).click
+  end
+  begin
+    @browser.links.each do |link|
+      if link.attribute_value('class') == 'ub-list-action'
+        link.click
+        @browser.div(:id, 'ub-loading-indicator').wait_while_present
+      end
+    end
+  rescue
+  end
+  puts 'finsihed removing saved cards'
+  @browser.goto(@base_url)
 end
 
 And(/^I add the payment card "([^"]*)"$/) do |arg|
@@ -182,7 +222,7 @@ And(/^I select a size$/) do
       options = select.options
       options.each do |option|
         options_array.push(option.value)
-        puts option.value
+       # puts option.value
       end
       if options_array.size > 2
         select.select options_array[1]

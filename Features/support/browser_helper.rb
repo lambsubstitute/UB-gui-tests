@@ -150,7 +150,7 @@ def set_phone_orientation()
       debug_output("setting portrait for phone")
       @browser_width = 320
     end
-   @browser_height = 800
+   @browser_height = 950
   end
 end
 

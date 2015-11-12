@@ -22,6 +22,12 @@ Before do |scenario|
   debug_output("ENVIRONMENT = #{ ENV['ENVIRONMENT']}")
 
   start_browser(scenario)
+ # @browser.goto('http://bbc.com')
+ # @browser.goto(@base_url)
+ # add_product_to_basket('http://www.asos.com/pgeproduct.aspx?iid=5039473&CTARef=Basket+Page&r=2')
+ # remove_saved_cards
+ # remove_added_addresses
+ # empty_basket
 end
 
 def debug_output(output)
@@ -62,7 +68,7 @@ After do |scenario|
   remove_saved_cards
   remove_added_addresses
   empty_basket
-  #@browser.close
+  @browser.close
 end
 
 at_exit do

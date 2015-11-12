@@ -15,9 +15,10 @@ Feature: add product to basket
       And I enter the address "27-31 Clerkenwell Close"
       And I select the address "27 31 Clerkenwell Close"
       And I add the payment card "4111111111111111"
-      When I complete the purchase
+    #  When I complete the purchase
 
   Scenario: test empty basket clean up method
+    Given I add the product "http://www.asos.com/pgeproduct.aspx?iid=5039473&CTARef=Basket+Page&r=2" to the basket
     Given I empty the basket
 
 
