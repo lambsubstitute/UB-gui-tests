@@ -5,8 +5,40 @@ def add_product_to_basket(product_url)
     sleep 0.5
   end
   puts 'added item to basket, now sleeping for visible check'
-  @browser.div(:id, 'ub-basket-contents').wait_until_present
+  wait_for_basket
 end
+
+def goto_basket
+  @browser.goto(@base_url + 'basket')
+  wait_for_basket
+end
+
+def wait_for_basket
+  basket = Basket.new(@browser)
+  basket.wait_for_basket
+end
+
+def get_basket_shop
+  basket = Basket.new(@browser)
+  return basket.get_basket_shop_name
+end
+
+
+def item_in_basket_displays_shop(expected_shop_name)
+  basket_shop_name = get_basket_shop
+  assert (basket_shop_name.include? expected_shop_name), basket_shop_name + ' did not include: ' + expected_shop_name
+end
+
+def get_basket_item_name
+  basket = Basket.new(@browser)
+  return basket.get_item_name
+end
+
+def item_with_name_is_in_basket(item_name)
+  product_name = get_basket_item_name
+  assert (product_name.include? item_name), product_name + ' did not include: ' + item_name
+end
+
 
 
 def login_with_phone_number(phnone_no)
@@ -14,6 +46,7 @@ def login_with_phone_number(phnone_no)
   @browser.span(:text, '+ Add Personal Info').wait_until_present
   sleep 1
   @browser.send_keys :space
+  sleep 1
   @browser.send_keys :space
 
   @browser.span(:text, '+ Add Personal Info').click
@@ -33,18 +66,18 @@ end
 def remove_added_addresses
   delivery_div = nil
   @browser.divs.each do |div|
-    if div.label(:text,'Delivery').exist?
+    if div.label(:text, 'Delivery').exist?
       delivery_div = div
     end
   end
 
   puts 'removing addresses'
   begin
-    @browser.div(:id, 'ub-loading-indicator').wait_while_present
+    wait_while_loading_indicator_present
     @browser.send_keys :space
     @browser.send_keys :space
 
-    delivery_div.div(:text,/Auatomation Evangalist/).click
+    delivery_div.div(:text, /Auatomation Evangalist/).click
     @browser.div(:class, 'ub-page').wait_until_present
     sleep 1
     address_links = Array.new
@@ -67,12 +100,9 @@ def remove_added_addresses
 end
 
 def empty_basket
-  @browser.goto(@base_url + 'basket')
-  @browser.div(:id, 'ub-basket-contents').wait_until_present
-
+  goto_basket
   while (@browser.text.include? "You haven't added anything to your basket.") == false
-
-    @browser.div(:id, 'ub-loading-indicator').wait_while_present
+    wait_while_loading_indicator_present
     exit_flag = false
     @browser.links.each do |link|
       break if exit_flag == true
@@ -80,10 +110,11 @@ def empty_basket
         if (link.attribute_value('class') == 'remove-item needsclick') && (link.visible? == true)
           link.click
           exit_flag = true
-          @browser.div(:id, 'ub-loading-indicator').wait_while_present
+          wait_while_loading_indicator_present
         end
       end
     end
+    sleep 1
     @browser.goto(@base_url + 'basket')
   end
 end
@@ -91,14 +122,10 @@ end
 def remove_saved_cards
   payments_div = nil
   @browser.divs.each do |div|
-    if div.label(:text,'Payment').exist?
-      # puts 'found master payments div'
+    if div.label(:text, 'Payment').exist?
       payments_div = div
-      #puts payments_div.text
     end
   end
-
-
   puts "removing saved cards"
   @browser.send_keys :space
   @browser.send_keys :space
@@ -109,7 +136,7 @@ def remove_saved_cards
     @browser.links.each do |link|
       if link.attribute_value('class') == 'ub-list-action'
         link.click
-        @browser.div(:id, 'ub-loading-indicator').wait_while_present
+        wait_while_loading_indicator_present
       end
     end
   rescue
@@ -118,16 +145,8 @@ def remove_saved_cards
   @browser.goto(@base_url)
 end
 
-
-
-def item_in_basket_displays_shop(shop_name)
-  assert (@browser.div(:class, 'ub-shop').text.include? shop_name), @browser.div(:class, 'ub-shop').text + ' did not include: ' + shop_name
-end
-
-
-def item_with_name_is_in_basket(item_name)
-  product = @browser.div(:class, 'ub-product')
-  assert (product.li(:class, 'ub-product-title').text.include? item_name), product.li(:class, 'ub-product-title').text + ' did not include: ' + item_name
+def wait_while_loading_indicator_present
+  @browser.div(:id, 'ub-loading-indicator').wait_while_present
 end
 
 def checkout_button_is_disabled
@@ -139,7 +158,7 @@ end
 
 def complete_purchase
   @browser.link(:id, 'checkout').wait_until_present
-  @browser.div(:id, 'ub-loading-indicator').wait_while_present
+  wait_while_loading_indicator_present
   @browser.link(:id, 'checkout').click
   @browser.link(:id, 'checkout').wait_while_present
 end
@@ -147,7 +166,7 @@ end
 
 def select_product_size
   @browser.link(:id, 'checkout').wait_until_present
-  @browser.div(:id, 'ub-loading-indicator').wait_while_present
+  wait_while_loading_indicator_present
   @browser.selects.each do |select|
     if select.attribute_value('name') == 'notused'
       options_array = Array.new
@@ -161,12 +180,11 @@ def select_product_size
       end
     end
   end
-  #@browser.select(:name, 'notused').select 'UK 4'
 end
 
 
 def add_payment_card(card_number)
-  @browser.div(:id, 'ub-loading-indicator').wait_while_present
+  wait_while_loading_indicator_present
   @browser.span(:text, '+ Add Payment Card').wait_until_present
   @browser.span(:text, '+ Add Payment Card').click
 
@@ -177,13 +195,13 @@ def add_payment_card(card_number)
   @browser.text_field(:id, 'cvv2').set '222'
   @browser.text_field(:id, 'name').set 'kw ford'
   @browser.button(:id, 'save-card').click
-  @browser.div(:id, 'ub-loading-indicator').wait_while_present
+  wait_while_loading_indicator_present
 end
 
 def select_address(first_line)
-  @browser.div(:id, 'ub-loading-indicator').wait_while_present
+  wait_while_loading_indicator_present
   @browser.span(:text, '+ Add Delivery Address').wait_until_present
-  @browser.div(:id, 'ub-loading-indicator').wait_while_present
+  wait_while_loading_indicator_present
   @browser.span(:text, '+ Add Delivery Address').click
   address_part = Regexp.new(first_line)
   @browser.link(:text, address_part).wait_until_present
@@ -194,7 +212,7 @@ end
 
 def add_address(address_suggest_string)
   @browser.link(:id, 'checkout').wait_until_present
-  @browser.div(:id, 'ub-loading-indicator').wait_while_present
+  wait_while_loading_indicator_present
   @browser.span(:text, '+ Add Delivery Address').wait_until_present
 
 
@@ -209,7 +227,7 @@ def add_address(address_suggest_string)
   @browser.text_field(:id, 'lastname').set 'Evangalist'
   @browser.text_field(:id, 'suggest').set address_suggest_string
   @browser.link(:text, '27-31 Clerkenwell Close, London').wait_until_present
-  sleep 1
+  sleep 3
   @browser.link(:text, '27-31 Clerkenwell Close, London').wait_until_present
   @browser.link(:text, '27-31 Clerkenwell Close, London').click
   @browser.text_field(:id, 'company').wait_until_present

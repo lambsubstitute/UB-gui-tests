@@ -72,7 +72,16 @@ After do |scenario|
 end
 
 at_exit do
-  #@browser.close
+
+end
+
+
+# Allows browser object to be shared across page object classes without declaring it in every po
+module PageInitializer
+  # initializer for page objects, generic @browser initializer/parser
+  def initialize(browser)
+    @browser = browser
+  end
 end
 
 
