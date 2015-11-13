@@ -23,6 +23,13 @@ def get_basket_shop
   return basket.get_basket_shop_name
 end
 
+def wait_for_checkout_button
+  @browser.link(:id, 'checkout').wait_until_present(120)
+end
+
+def wait_while_checkout_button_is_present
+  @browser.link(:id, 'checkout').wait_while_present
+end
 
 def item_in_basket_displays_shop(expected_shop_name)
   basket_shop_name = get_basket_shop
@@ -42,7 +49,7 @@ end
 
 
 def login_with_phone_number(phnone_no)
-  @browser.link(:id, 'checkout').wait_until_present
+  wait_for_checkout_button
   @browser.span(:text, '+ Add Personal Info').wait_until_present
   sleep 1
   @browser.send_keys :space
@@ -54,13 +61,13 @@ def login_with_phone_number(phnone_no)
   @browser.input(:id, 'phone').wait_until_present
 
 
-  @browser.text_field(:id, 'email').set 'keith.ford1980@googlemail.com'
+  @browser.text_field(:id, 'email').set DEFAULT_EMAIL
   @browser.text_field(:id, 'phone').set phnone_no
   @browser.button(:text, 'Continue').click
 
   @browser.execute_script('window.confirm("go get your phone and enter the pin you feckless dullard");')
   @browser.alert.wait_while_present(120)
-  @browser.link(:id, 'checkout').wait_until_present(120)
+  wait_for_checkout_button
 end
 
 def remove_added_addresses
@@ -94,7 +101,7 @@ def remove_added_addresses
     end
   rescue
   end
-  @browser.goto(@base_url)
+  goto_basket
 
   puts 'finished removintg addresses'
 end
@@ -115,7 +122,7 @@ def empty_basket
       end
     end
     sleep 1
-    @browser.goto(@base_url + 'basket')
+    goto_basket
   end
 end
 
@@ -142,7 +149,7 @@ def remove_saved_cards
   rescue
   end
   puts 'finsihed removing saved cards'
-  @browser.goto(@base_url)
+  goto_basket
 end
 
 def wait_while_loading_indicator_present
@@ -150,22 +157,22 @@ def wait_while_loading_indicator_present
 end
 
 def checkout_button_is_disabled
-  @browser.link(:id, 'checkout').wait_until_present
+  wait_for_checkout_button
   checkout_class = @browser.link(:id, 'checkout').attribute_value('class')
   assert (checkout_class.include? 'disabled'), checkout_class + ' did not contain disabled'
 end
 
 
 def complete_purchase
-  @browser.link(:id, 'checkout').wait_until_present
+  wait_for_checkout_button
   wait_while_loading_indicator_present
   @browser.link(:id, 'checkout').click
-  @browser.link(:id, 'checkout').wait_while_present
+  wait_while_checkout_button_is_present
 end
 
 
 def select_product_size
-  @browser.link(:id, 'checkout').wait_until_present
+  wait_for_checkout_button
   wait_while_loading_indicator_present
   @browser.selects.each do |select|
     if select.attribute_value('name') == 'notused'
@@ -211,7 +218,7 @@ end
 
 
 def add_address(address_suggest_string)
-  @browser.link(:id, 'checkout').wait_until_present
+  wait_for_checkout_button
   wait_while_loading_indicator_present
   @browser.span(:text, '+ Add Delivery Address').wait_until_present
 

@@ -57,3 +57,11 @@ Given(/^I remove all addresses, cards, items from the basket$/) do
   remove_added_addresses
   empty_basket
 end
+
+Then(/^I should be presented with the wait for confirmation from shop message$/) do
+  @browser.h4(:class, 'ub-subtitle').wait_until_present(120)
+  placing_order_page_text = @browser.h4(:class, 'ub-subtitle').text
+  puts placing_order_page_text
+  assert placing_order_page_text == "Your order is now being placed with
+the retailer. You'll soon receive an email confirmation from them directly."
+end

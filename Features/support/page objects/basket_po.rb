@@ -18,7 +18,11 @@ class Basket
   end
 
   def wait_for_basket
-    @browser.div(:class, MAIN_DIV_ID).wait_until_present
+    if @browser.text.include?  "You haven't added anything to your basket."
+      puts 'basket is empty'
+    else
+      @browser.div(:class, MAIN_DIV_ID).wait_until_present(20)
+    end
   end
 
   def get_basket_shop_name

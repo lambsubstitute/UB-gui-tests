@@ -8,14 +8,18 @@ Feature: add product to basket
     And the checkout button should be disabled
 
 
-    Scenario: complete purchase
-      Given I add the product "http://www.asos.com/pgeproduct.aspx?iid=5039473&CTARef=Basket+Page&r=2" to the basket
-      And I select a size
-      And I enter the telephone number "07568091557"
-      And I enter the address "27-31 Clerkenwell Close"
-      And I select the address "27 31 Clerkenwell Close"
-      And I add the payment card "4111111111111111"
-    #  When I complete the purchase
+  Scenario: complete purchase
+    Given I add the product "http://www.asos.com/pgeproduct.aspx?iid=5039473&CTARef=Basket+Page&r=2" to the basket
+    And I select a size
+    And I enter the telephone number "07568091557"
+    And I enter the address "27-31 Clerkenwell Close"
+    And I select the address "27 31 Clerkenwell Close"
+    And I add the payment card "4111111111111111"
+    When I complete the purchase
+    Then I should be presented with the wait for confirmation from shop message
+  # todo two ways of handling the back end check for thetransaction
+  # And the back office app should show the transactions as failed bad card
+  # And I can see the transaction and failed card emails
 
   Scenario: test empty basket clean up method
     Given I add the product "http://www.asos.com/pgeproduct.aspx?iid=5039473&CTARef=Basket+Page&r=2" to the basket
