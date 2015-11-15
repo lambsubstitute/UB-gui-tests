@@ -1,6 +1,13 @@
-Given(/^I add the product "([^"]*)" to the basket$/) do |arg|
+Given(/^I add the product "(.*)" to the basket$/) do |arg|
   add_product_to_basket(arg)
 end
+
+Given(/^I add the default product to the basket$/) do
+  DEFAULT_PRODUCT = "http://www.forever21.com/UK/Product/Product.aspx?BR=f21&Category=shoes&ProductID=2000178940&VariantID=&utm_source=6E6QwAp3j7Q&utm_medium=affiliate&utm_campaign=linkshare_f21"
+  add_product_to_basket(DEFAULT_PRODUCT)
+end
+
+
 
 Then(/^the item in the basket should have the seller "([^"]*)"$/) do |arg|
   item_in_basket_displays_shop(arg)
@@ -43,7 +50,7 @@ And(/^I select the address "(.*)"$/) do |arg|
 end
 
 And(/^I select a size$/) do
-  select_product_size
+  select_all_product_attributes
 end
 
 When(/^I complete the purchase$/) do

@@ -47,7 +47,6 @@ def item_with_name_is_in_basket(item_name)
 end
 
 
-
 def login_with_phone_number(phnone_no)
   wait_for_checkout_button
   @browser.span(:text, '+ Add Personal Info').wait_until_present
@@ -171,22 +170,50 @@ def complete_purchase
 end
 
 
-def select_product_size
+def select_all_product_attributes
   wait_for_checkout_button
   wait_while_loading_indicator_present
-  @browser.selects.each do |select|
-    if select.attribute_value('name') == 'notused'
+
+  basket = Basket.new(@browser)
+  product = basket.get_first_product
+
+  product_attributes = product.div(:class, 'ub-product-attributes')
+  attribute_count = product_attributes.selects.length
+  count = 0
+
+  while count < attribute_count
+    exit_flag = false
+    select = get_last_active_select_list
+    if select.nil? == false
       options_array = Array.new
       options = select.options
       options.each do |option|
         options_array.push(option.value)
-        # puts option.value
+        puts option.value
       end
-      if options_array.size > 2
+
+
+      if options_array.size > 2 && exit_flag == false
+        puts options_array[1]
         select.select options_array[1]
+        exit_flag = true
       end
     end
+    count = count + 1
   end
+end
+
+def get_last_active_select_list
+  basket = Basket.new(@browser)
+  product = basket.get_first_product
+  select_to_return = nil
+  product_attributes = product.div(:class, 'ub-product-attributes')
+  product_attributes.selects.each do |select|
+    if select.selected_index == 0 && select.enabled? && select.options.length > 1
+      select_to_return = select
+    end
+  end
+  return select_to_return
 end
 
 
