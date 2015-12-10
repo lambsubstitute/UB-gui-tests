@@ -193,6 +193,8 @@ def set_urls()
     @base_url = BASE_URL
   elsif ENV['ENVIRONMENT'] == "staging"
     @base_url = STAGING_BASE
+  elsif ENV['ENVIRONMENT'] == "LIVE"
+    @base_url = LIVE_BASE
   elsif ENV['ENVIRONMENT'] == "za"
     @base_url = ZA_BASE
   elsif (ENV['ENVIRONMENT'] == "qa1") || (ENV['ENVIRONMENT'] ==  "QA1")
