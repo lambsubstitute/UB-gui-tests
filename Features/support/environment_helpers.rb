@@ -193,8 +193,14 @@ def set_urls()
     @base_url = BASE_URL
   elsif ENV['ENVIRONMENT'] == "staging"
     @base_url = STAGING_BASE
+    @user_cookie_name = 'ubsite.staging.sid'
+    @user_cookie_value = 's%3AtaMXflvzxfhk40Ieuh8gBuYu.QUQOIbxPKwC0%2BjXURTHB1bac9WSV7wCRQn2TCD7QV9A'
+    @user_cookie_domain = 'staging.ub.io'
   elsif ENV['ENVIRONMENT'] == "LIVE"
     @base_url = LIVE_BASE
+    @user_cookie_name = 'ubsite..sid'
+    @user_cookie_value = 's%3APdGwoQpnocfxbLxWFCaRftJF.BcR4lZNw0xM9ALrX2vJ%2B8ZFoTZOjavEFlu3FKcsvFIA'
+    @user_cookie_domain = 'ub.io'
   elsif ENV['ENVIRONMENT'] == "za"
     @base_url = ZA_BASE
   elsif (ENV['ENVIRONMENT'] == "qa1") || (ENV['ENVIRONMENT'] ==  "QA1")

@@ -72,3 +72,17 @@ Then(/^I should be presented with the wait for confirmation from shop message$/)
   assert placing_order_page_text == "Your order is now being placed with
 the retailer. You'll soon receive an email confirmation from them directly."
 end
+
+Given(/^I have a defined UB cookie$/) do
+  add_ub_cookie
+end
+
+def add_ub_cookie
+  expiry_date = DateTime.new(2016,12,3)
+  puts 'adding cookie'
+  @browser.cookies.add @user_cookie_name, @user_cookie_value, secure: false, path: '/', expires: expiry_date, domain: @user_cookie_domain
+  cookies  = @browser.cookies.to_a
+  cookies.each do |cooky|
+    puts cooky
+  end
+end

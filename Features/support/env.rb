@@ -57,6 +57,8 @@ def start_browser(scenario)
   set_urls
   @browser = browser
   @browser.goto(@base_url + 'basket')
+  add_ub_cookie
+  @browser.goto(@base_url + 'basket')
 end
 
 After do |scenario|
@@ -64,7 +66,7 @@ After do |scenario|
     #takeFailedScenarioScreenshot(scenario)
   #end
 
-  add_product_to_basket('http://www.asos.com/pgeproduct.aspx?iid=5039473&CTARef=Basket+Page&r=2')
+  add_product_to_basket(DEFAULT_PRODUCT)
   remove_saved_cards
   remove_added_addresses
   empty_basket
