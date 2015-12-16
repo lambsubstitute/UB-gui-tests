@@ -66,7 +66,17 @@ After do |scenario|
     #takeFailedScenarioScreenshot(scenario)
   #end
 
-  add_product_to_basket(DEFAULT_PRODUCT)
+  if @country == nil
+   add_product_to_basket(DEFAULT_PRODUCT)
+  elsif @country == 'de'
+    add_product_to_basket(DEFAULT_DE_PRODUCT)
+  elsif @country == 'fr'
+    add_product_to_basket(DEFAULT_FR_PRODUCT)
+  elsif @country == 'it'
+    add_product_to_basket(DEFAULT_IT_PRODUCT)
+  elsif @country == 'uk'
+    add_product_to_basket(DEFAULT_PRODUCT)
+  end
   remove_saved_cards
   remove_added_addresses
   empty_basket
