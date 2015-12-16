@@ -15,11 +15,26 @@ end
 
 Then(/^I should see the basket$/) do
   basket = Basket.new(@browser)
-  basket_present = basket.basket_present?
-  assert basket_present
+  assert basket.basket_present?
 end
 
 Given(/^I add a uk user cookie$/) do
   add_ub_cookie
   @browser.goto(@base_url + 'basket')
+end
+
+Given(/^I have a german product in the basket$/) do
+  @country = 'de'
+  add_product_to_basket(DEFAULT_DE_PRODUCT)
+end
+
+When(/^i try to add a uk product$/) do
+  add_product_to_basket_with_no_waits_or_checks(DEFAULT_PRODUCT)
+end
+
+Then(/^the item should not be added to the basket$/) do
+  @browser.div(:id, 'out-of-stock-message').wait_until_present(120)
+  assert @browser.text.include? 'Oops'
+  assert @browser.text.include? 'This item appears to be'
+  assert @browser.text.include? 'out of stock.'
 end

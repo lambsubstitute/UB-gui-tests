@@ -16,6 +16,11 @@ def add_product_to_basket(product_url)
   wait_for_basket
 end
 
+def add_product_to_basket_with_no_waits_or_checks(product_url)
+  @browser.goto(@base_url)
+  @browser.goto(@base_url + product_url)
+end
+
 def goto_basket
   @browser.goto(@base_url + 'basket')
   wait_for_basket
