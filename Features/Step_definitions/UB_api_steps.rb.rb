@@ -19,7 +19,7 @@ end
 
 Given(/^I have a user token$/) do
   request_api_user_token
-  extract_user_token(@response)
+ @user_token = extract_user_token(@response)
 end
 
 def request_api_user_token
@@ -31,15 +31,26 @@ def request_api_user_token
   return @response
 end
 
+def request_crawl_on_product(user_token, product_url)
+  api_prod_crawl_url = API_BASE + 'products/crawl'
+  puts 'apiKey=' + user_token + ' url=' + product_url + ' wait:=true'
+  response = HTTParty.post(api_prod_crawl_url, :body => 'apiKey=' + user_token + ' url=' + product_url + ' wait:=true'  )
+  @crawl_response = response
+  puts @crawl_response.body
+  return @response
+end
+
 def extract_user_token(response)
   response_body = response.body.to_s
   token = response_body.match(/"token":".*scope/)
   token = token.to_s.gsub('"token":"', '').gsub('","scope', '')
+  puts 'extracted user token'
   puts token
+  return token
 end
 
 When(/^I request pre crawl on the product url "([^"]*)"$/) do |arg|
-  pending
+  request_crawl_on_product(@user_token, arg)
 end
 
 Then(/^I should receive the data:$/) do |table|
