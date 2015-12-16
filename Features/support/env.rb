@@ -57,8 +57,6 @@ def start_browser(scenario)
   set_urls
   @browser = browser
   @browser.goto(@base_url + 'basket')
-  add_ub_cookie
-  @browser.goto(@base_url + 'basket')
 end
 
 After do |scenario|

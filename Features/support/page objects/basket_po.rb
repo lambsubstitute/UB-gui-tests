@@ -40,5 +40,15 @@ class Basket
     return product.li(:class, PRODUCT_LI_CLASS).text
   end
 
+  def get_first_basket_item_name
+    product = get_first_product
+    return product.li(:class, PRODUCT_LI_CLASS).text
+  end
+
+  def basket_present?
+    basket = get_basket
+    return basket.div(:class, PRODUCT_DIV_CLASS).present?
+  end
+
 
 end

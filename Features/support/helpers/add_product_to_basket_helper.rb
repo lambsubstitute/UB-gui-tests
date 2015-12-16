@@ -1,8 +1,16 @@
 def add_product_to_basket(product_url)
   @browser.goto(@base_url)
   @browser.goto(@base_url + product_url)
-  while @browser.text.include? 'Fetching product details'
+  while (@browser.alert.present? == false) && (@browser.text.include? 'Fetching product details')
     sleep 0.5
+  end
+
+  if @browser.alert.present?
+    puts @browser.alert.text
+    if @browser.alert.text == 'Something went wrong at our end. Please try again later.'
+      @browser.alert.ok
+      assert false, 'check the VPN as the country might not have any workers for: ' + @country
+    end
   end
   puts 'added item to basket, now sleeping for visible check'
   wait_for_basket
@@ -125,6 +133,10 @@ def empty_basket
   end
 end
 
+def basket_is_empty?
+  return @browser.text.include? "You haven't added anything to your basket."
+end
+
 def remove_saved_cards
   payments_div = nil
   @browser.divs.each do |div|
@@ -238,7 +250,7 @@ def select_address(first_line)
   wait_while_loading_indicator_present
   @browser.span(:text, '+ Add Delivery Address').click
   address_part = Regexp.new(first_line)
- # address_part_reg = Regexp.new(address_part)
+  # address_part_reg = Regexp.new(address_part)
   @browser.link(:text, address_part).wait_until_present
   @browser.link(:text, address_part).click
   @browser.div(:id, 'ub-loading-indicator').wait_while_present

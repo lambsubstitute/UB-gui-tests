@@ -88,6 +88,6 @@ def add_ub_cookie
 end
 
 Given(/^I add the product "([^"]*)" to the basket from the country "([^"]*)"$/) do |arg1, arg2|
-  @country == arg2
+  @country = arg2
   add_product_to_basket(arg1)
 end
