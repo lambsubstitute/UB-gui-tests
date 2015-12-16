@@ -18,11 +18,16 @@ GEM
     facets (3.0.0)
     ffi (1.9.10-x86-mingw32)
     gherkin3 (3.1.2)
+    httparty (0.13.7)
+      json (~> 1.8)
+      multi_xml (>= 0.5.2)
     json (1.8.3)
     multi_json (1.11.2)
     multi_test (0.1.2)
+    multi_xml (0.5.5)
     power_assert (0.2.6)
     psych (2.0.15)
+    rake (10.4.2)
     rspec (3.4.0)
       rspec-core (~> 3.4.0)
       rspec-expectations (~> 3.4.0)
@@ -62,6 +67,8 @@ PLATFORMS
 DEPENDENCIES
   chunky_png
   cucumber
+  httparty
+  rake
   rspec
   selenium-webdriver
   test-unit

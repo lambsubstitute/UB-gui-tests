@@ -7,8 +7,8 @@ include Test::Unit::Assertions
 require 'selenium-webdriver'
 require 'rubygems'
 require 'watir-webdriver-performance'
-
-
+#include HTTParty
+require 'HTTParty'
 
 
 Before do |scenario|
@@ -22,12 +22,12 @@ Before do |scenario|
   debug_output("ENVIRONMENT = #{ ENV['ENVIRONMENT']}")
 
   start_browser(scenario)
- # @browser.goto('http://bbc.com')
- # @browser.goto(@base_url)
- # add_product_to_basket('http://www.asos.com/pgeproduct.aspx?iid=5039473&CTARef=Basket+Page&r=2')
- # remove_saved_cards
- # remove_added_addresses
- # empty_basket
+  # @browser.goto('http://bbc.com')
+  # @browser.goto(@base_url)
+  # add_product_to_basket('http://www.asos.com/pgeproduct.aspx?iid=5039473&CTARef=Basket+Page&r=2')
+  # remove_saved_cards
+  # remove_added_addresses
+  # empty_basket
 end
 
 def debug_output(output)
@@ -41,43 +41,45 @@ def start_browser(scenario)
   count = 0
   while browser == nil
     #begin
-      if ENV['BROWSER'].include? "firefox"
-        puts "tryng to start the mother fucking firefox"
-        browser = start_firefox(scenario)
-      elsif ENV['BROWSER'].include? "chrome"
-        browser = start_chrome
-      elsif ENV['BROWSER'].include? "headerless"
-        browser = start_headerless
-      elsif ENV['BROWSER'].include? "android_emulator"
-        browser = start_remote_android_webdriver
-      elsif ENV['BROWSER'].include? "browserstack"
-        browser = start_browserstack
-      end
+    if ENV['BROWSER'].include? "firefox"
+      puts "tryng to start the mother fucking firefox"
+      browser = start_firefox(scenario)
+    elsif ENV['BROWSER'].include? "chrome"
+      browser = start_chrome
+    elsif ENV['BROWSER'].include? "headerless"
+      browser = start_headerless
+    elsif ENV['BROWSER'].include? "android_emulator"
+      browser = start_remote_android_webdriver
+    elsif ENV['BROWSER'].include? "browserstack"
+      browser = start_browserstack
+    end
   end
   set_urls
   @browser = browser
   @browser.goto(@base_url + 'basket')
+  @add_product = true
 end
 
 After do |scenario|
   #if scenario.failed?
-    #takeFailedScenarioScreenshot(scenario)
+  #takeFailedScenarioScreenshot(scenario)
   #end
-
-  if @country == nil
-   add_product_to_basket(DEFAULT_PRODUCT)
-  elsif @country == 'de'
-    add_product_to_basket(DEFAULT_DE_PRODUCT)
-  elsif @country == 'fr'
-    add_product_to_basket(DEFAULT_FR_PRODUCT)
-  elsif @country == 'it'
-    add_product_to_basket(DEFAULT_IT_PRODUCT)
-  elsif @country == 'uk'
-    add_product_to_basket(DEFAULT_PRODUCT)
+  if @add_product == true
+    if @country == nil
+      add_product_to_basket(DEFAULT_PRODUCT)
+    elsif @country == 'de'
+      add_product_to_basket(DEFAULT_DE_PRODUCT)
+    elsif @country == 'fr'
+      add_product_to_basket(DEFAULT_FR_PRODUCT)
+    elsif @country == 'it'
+      add_product_to_basket(DEFAULT_IT_PRODUCT)
+    elsif @country == 'uk'
+      add_product_to_basket(DEFAULT_PRODUCT)
+    end
+    remove_saved_cards
+    remove_added_addresses
+    empty_basket
   end
-  remove_saved_cards
-  remove_added_addresses
-  empty_basket
   @browser.close
 end
 
