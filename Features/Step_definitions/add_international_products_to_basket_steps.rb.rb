@@ -1,3 +1,4 @@
+# encoding: UTF-8
 Given(/^the basket is empty with no saved details$/) do
   #@browser.goto(@base_url + '/basket')
   remove_saved_cards
@@ -37,4 +38,18 @@ Then(/^the item should not be added to the basket$/) do
   assert @browser.text.include? 'Oops'
   assert @browser.text.include? 'This item appears to be'
   assert @browser.text.include? 'out of stock.'
+end
+
+And(/^the item currency should match the "([^"]*)"$/) do |arg|
+  basket = Basket.new(@browser)
+  price = basket.get_item_price
+  puts price
+  assert price.include? arg
+end
+
+And(/^the basket subtotals should have the currency "([^"]*)"$/) do |arg|
+  basket = Basket.new(@browser)
+  totals_price = basket.get_totals_price
+  puts totals_price
+  assert totals_price.include? arg
 end

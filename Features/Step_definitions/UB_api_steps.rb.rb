@@ -34,7 +34,9 @@ end
 def request_crawl_on_product(user_token, product_url)
   api_prod_crawl_url = API_BASE + 'products/crawl'
   puts 'apiKey=' + user_token + ' url=' + product_url + ' wait:=true'
-  response = HTTParty.post(api_prod_crawl_url, :body => 'apiKey=' + user_token + ' url=' + product_url + ' wait:=true'  )
+
+  #response = HTTParty.post(api_prod_crawl_url, :body => 'apiKey=11c91508603f7e2f117e5bcdaa97b16029c2a3d24205926b097b03b47604d726773b2e0f9440180b7e7cfdf17d8903b93b32301fe2503371b8e6aeadf4e14d8b ' + ' url=' + product_url + ' wait:=true'  )
+  response = HTTParty.post(api_prod_crawl_url, :body => 'apiKey=11c91508603f7e2f117e5bcdaa97b16029c2a3d24205926b097b03b47604d726773b2e0f9440180b7e7cfdf17d8903b93b32301fe2503371b8e6aeadf4e14d8b ' + user_token + ' url=' + product_url + ' wait:=true', :header => 'access_token=' + user_token  )
   @crawl_response = response
   puts @crawl_response.body
   return @response

@@ -50,5 +50,15 @@ class Basket
     return basket.div(:class, PRODUCT_DIV_CLASS).present?
   end
 
+  def get_item_price
+    basket = get_basket
+    return basket.li(:class, 'ub-product-price').text
+  end
+
+  def get_totals_price
+    basket = get_basket
+    return basket.div(:class, 'ub-total-container').text
+  end
+
 
 end

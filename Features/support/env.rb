@@ -64,6 +64,10 @@ After do |scenario|
   #if scenario.failed?
   #takeFailedScenarioScreenshot(scenario)
   #end
+  if scenario.failed?
+    #check_console_log
+    getLog('chrome')
+  end
   if @add_product == true
     if @country == nil
       add_product_to_basket(DEFAULT_PRODUCT)
@@ -85,6 +89,22 @@ end
 
 at_exit do
 
+end
+
+def check_console_log
+  console_log = @browser.driver.manage.get_log(:browser)
+  if console_log != nil
+    raise(console_log)
+    puts console_log
+  end
+end
+
+def getLog(type)
+  data = @browser.execute :getLog, {}, :type => type.to_s
+  Array(data).map do |l|
+    LogEntry.new l.fetch('level'), l.fetch('timestamp'), l.fetch('message')
+    puts LogEntry
+  end
 end
 
 
