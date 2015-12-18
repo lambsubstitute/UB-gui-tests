@@ -123,3 +123,22 @@ Then(/^the currency should have the code "([^"]*)" and the symbol "([^"]*)"$/) d
   assert currency_json.fetch(:code) == arg1
   assert currency_json.fetch(:symbol) == arg2
 end
+
+When(/^I request the status of the shop "(.*)"$/) do |arg|
+  request_shop_supported_status(arg)
+end
+
+def request_shop_supported_status(shop_url)
+  api_prod_crawl_url = API_BASE + 'shop/scriptexists?'
+  shop_uri  = URI(shop_url)
+  response = HTTParty.post(api_prod_crawl_url, :body => 'url=' + shop_uri.to_s)
+  @shop_supported_response = response
+  puts @shop_supported_response.body
+  return @shop_supported_response
+end
+
+Then(/^the status should be supported$/) do
+  parsed_status = JSON.parse(@shop_supported_response.body, :symbolize_names => true)
+  puts parsed_status.fetch(:status)
+  assert parsed_status.fetch(:status) == 'ok'
+end
