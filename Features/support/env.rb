@@ -66,7 +66,7 @@ After do |scenario|
   #end
   if scenario.failed?
     #check_console_log
-    getLog('chrome')
+ #   getLog('chrome')
   end
   if @add_product == true
     if @country == nil

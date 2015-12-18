@@ -19,27 +19,25 @@ end
 
 Given(/^I have a user token$/) do
   request_api_user_token
- @user_token = extract_user_token(@response)
+  @user_token = extract_user_token(@response)
 end
 
 def request_api_user_token
   @add_product = false
   @browser.close
   api_auth_host = API_BASE + 'oauth/issue'
-  response = HTTParty.post(api_auth_host, :body => 'apiKey=11c91508603f7e2f117e5bcdaa97b16029c2a3d24205926b097b03b47604d726773b2e0f9440180b7e7cfdf17d8903b93b32301fe2503371b8e6aeadf4e14d8b'  )
+  response = HTTParty.post(api_auth_host, :body => 'apiKey=11c91508603f7e2f117e5bcdaa97b16029c2a3d24205926b097b03b47604d726773b2e0f9440180b7e7cfdf17d8903b93b32301fe2503371b8e6aeadf4e14d8b')
   @response = response
   return @response
 end
 
 def request_crawl_on_product(user_token, product_url)
   api_prod_crawl_url = API_BASE + 'products/crawl'
-  puts 'apiKey=' + user_token + ' url=' + product_url + ' wait:=true'
-
-  #response = HTTParty.post(api_prod_crawl_url, :body => 'apiKey=11c91508603f7e2f117e5bcdaa97b16029c2a3d24205926b097b03b47604d726773b2e0f9440180b7e7cfdf17d8903b93b32301fe2503371b8e6aeadf4e14d8b ' + ' url=' + product_url + ' wait:=true'  )
-  response = HTTParty.post(api_prod_crawl_url, :body => 'apiKey=11c91508603f7e2f117e5bcdaa97b16029c2a3d24205926b097b03b47604d726773b2e0f9440180b7e7cfdf17d8903b93b32301fe2503371b8e6aeadf4e14d8b ' + user_token + ' url=' + product_url + ' wait:=true', :header => 'access_token=' + user_token  )
+  product_uri = uri = URI(product_url)
+  response = HTTParty.post(api_prod_crawl_url, :body => 'apiKey=11c91508603f7e2f117e5bcdaa97b16029c2a3d24205926b097b03b47604d726773b2e0f9440180b7e7cfdf17d8903b93b32301fe2503371b8e6aeadf4e14d8b&' + '&url=' + product_uri.to_s + '&wait=true')
   @crawl_response = response
   puts @crawl_response.body
-  return @response
+  return @crawl_response
 end
 
 def extract_user_token(response)
@@ -52,10 +50,76 @@ def extract_user_token(response)
 end
 
 When(/^I request pre crawl on the product url "([^"]*)"$/) do |arg|
-  request_crawl_on_product(@user_token, arg)
+  crawl_results = request_crawl_on_product(@user_token, arg)
+  @parsed_response = JSON.parse(crawl_results.body, :symbolize_names => true)
+  puts @parsed_response
+  pretty_str = JSON.pretty_unparse(@parsed_response)
+  puts pretty_str
 end
 
 Then(/^I should receive the data:$/) do |table|
-  # table is a table.hashes.keys # => []
-  pending
+  puts '======================================='
+  puts @parsed_response.fetch(:status)
+  puts @parsed_response.fetch(:product)
+  puts @parsed_response
+  #product = nil
+  product_array = Array.new
+  @parsed_response.each do |key, val|
+    puts "#{key} => #{val}" # prints each key and value.
+    if key == :product
+      product_array.push(val)
+    end
+  end
+
+  puts product_array.length
+  product_array.each do |product|
+    puts product.fetch(:price)
+    puts product.fetch(:url)
+  end
+
+end
+
+def get_product_json(crawl_data)
+  puts 'looking for product in crawl data'
+  crawl_data.each do |key, val|
+    puts "#{key} => #{val}" # prints each key and value.
+    if key == :product
+      puts "returning product : " + val.to_s
+      return val
+    end
+  end
+end
+
+def get_price_json_from_product(product_json)
+  puts 'looking for price in product'
+  product_json.each do |key, val|
+    puts "#{key} => #{val}" # prints each key and value.
+    if key == :price
+      puts "returning price : " + val.to_s
+      return val
+    end
+  end
+end
+
+def get_currency_json_from_price(price_json)
+  puts 'looking for currency in price'
+  price_json.each do |key, val|
+    puts "#{key} => #{val}" # prints each key and value.
+    if key == :currency
+      puts "returning currency info : " + val.to_s
+      return val
+    end
+  end
+end
+
+Then(/^the currency should have the code "([^"]*)" and the symbol "([^"]*)"$/) do |arg1, arg2|
+  product_json = get_product_json(@parsed_response)
+  price_json = get_price_json_from_product(product_json)
+  currency_json = get_currency_json_from_price(price_json)
+ # product_json = @parsed_response.fetch(:product)
+ # price_json = product_json.fetch(:price)
+
+  puts currency_json
+  assert currency_json.fetch(:code) == arg1
+  assert currency_json.fetch(:symbol) == arg2
 end
