@@ -41,16 +41,21 @@ def request_crawl_on_product(user_token, product_url)
 end
 
 def extract_user_token(response)
-  response_body = response.body.to_s
-  token = response_body.match(/"token":".*scope/)
-  token = token.to_s.gsub('"token":"', '').gsub('","scope', '')
+  parsed_status = JSON.parse(response.body, :symbolize_names => true)
+  token =  parsed_status.fetch(:access_token)
+ # token = response_body.match(/"token":".*scope/)
+ # token = token.to_s.gsub('"token":"', '').gsub('","scope', '')
   puts 'extracted user token'
   puts token
   return token
 end
 
 When(/^I request pre crawl on the product url "([^"]*)"$/) do |arg|
-  crawl_results = request_crawl_on_product(@user_token, arg)
+  get_data_from_request_crawl_on_product(arg)
+end
+
+def get_data_from_request_crawl_on_product(product_url)
+  crawl_results = request_crawl_on_product(@user_token, product_url)
   @parsed_response = JSON.parse(crawl_results.body, :symbolize_names => true)
   puts @parsed_response
   pretty_str = JSON.pretty_unparse(@parsed_response)
@@ -112,13 +117,22 @@ def get_currency_json_from_price(price_json)
   end
 end
 
+def get_value_from_json_for_key(key_lookup, json)
+  puts key_lookup
+  key_sym = key_lookup.to_sym
+  json.each do |key, val|
+    puts "#{key} => #{val}" # prints each key and value.
+    if key == key_sym
+      puts "returning requested value for #{key_lookup} : " + val.to_s
+      return val
+    end
+  end
+end
+
 Then(/^the currency should have the code "([^"]*)" and the symbol "([^"]*)"$/) do |arg1, arg2|
   product_json = get_product_json(@parsed_response)
   price_json = get_price_json_from_product(product_json)
   currency_json = get_currency_json_from_price(price_json)
- # product_json = @parsed_response.fetch(:product)
- # price_json = product_json.fetch(:price)
-
   puts currency_json
   assert currency_json.fetch(:code) == arg1
   assert currency_json.fetch(:symbol) == arg2
