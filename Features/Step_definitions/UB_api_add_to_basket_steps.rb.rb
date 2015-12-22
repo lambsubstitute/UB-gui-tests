@@ -19,6 +19,7 @@ When(/^I request through the api the item is added to the basket$/) do
                                                               'scope' => access_token_parsed.fetch(:scope).to_s,
                                                               'expiryDate' => access_token_parsed.fetch(:expiryDate).to_s,
                                                               'id' => access_token_parsed.fetch(:id).to_s})
+  puts @prod_id
   api_auth_host = API_BASE + 'basket/add/:' + @prod_id
   puts api_auth_host
   response = HTTParty.post(api_auth_host, :headers => {'userId' => access_token_parsed.fetch(:userId).to_s,
