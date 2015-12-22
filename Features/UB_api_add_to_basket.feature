@@ -8,3 +8,12 @@ Feature: UB api - add to basket
     When I request through the api the item is added to the basket
     Then the iem requested should be in the new basket
 
+
+  Scenario: remove item from basket
+    Given I have a user token
+    And I know the product id for the product "http://www.farfetch.com/uk/shopping/women/dsquared2--skinny-jeans-item-11052231.aspx?storeid=9274&ffref=lp_pic_7_11_"
+    When I request through the api the item is added to the basket
+    And I remove the item from the basket
+    Then my basket should be empty
+
+

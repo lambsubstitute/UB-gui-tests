@@ -118,10 +118,10 @@ def get_currency_json_from_price(price_json)
 end
 
 def get_value_from_json_for_key(key_lookup, json)
-  puts key_lookup
+  #puts key_lookup
   key_sym = key_lookup.to_sym
   json.each do |key, val|
-    puts "#{key} => #{val}" # prints each key and value.
+   # puts "#{key} => #{val}" # prints each key and value.
     if key == key_sym
       puts "returning requested value for #{key_lookup} : " + val.to_s
       return val
