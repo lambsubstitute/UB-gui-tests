@@ -53,3 +53,4 @@ And(/^the basket subtotals should have the currency "([^"]*)"$/) do |arg|
   puts totals_price
   assert totals_price.include? arg
 end
+

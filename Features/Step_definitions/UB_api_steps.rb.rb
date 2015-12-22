@@ -33,7 +33,7 @@ end
 
 def request_crawl_on_product(user_token, product_url)
   api_prod_crawl_url = API_BASE + 'products/crawl'
-  product_uri = uri = URI(product_url)
+  product_uri  = URI(product_url)
   response = HTTParty.post(api_prod_crawl_url, :body => 'apiKey=11c91508603f7e2f117e5bcdaa97b16029c2a3d24205926b097b03b47604d726773b2e0f9440180b7e7cfdf17d8903b93b32301fe2503371b8e6aeadf4e14d8b&' + '&url=' + product_uri.to_s + '&wait=true')
   @crawl_response = response
   puts @crawl_response.body
