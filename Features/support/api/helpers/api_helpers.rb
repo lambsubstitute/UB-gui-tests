@@ -1,33 +1,36 @@
+def build_headers(user_token)
+  puts user_token
+  access_json = JSON.generate(user_token)
+  access_token_parsed = JSON.parse(access_json, :symbolize_names => true)
+  puts access_token_parsed.fetch(:userId)
+  headers = {'userId' => access_token_parsed.fetch(:userId).to_s,
+             'appId' => access_token_parsed.fetch(:appId).to_s,
+             'countryId' => access_token_parsed.fetch(:countryId).to_s,
+             'token' => access_token_parsed.fetch(:token).to_s,
+             'scope' => access_token_parsed.fetch(:scope).to_s,
+             'expiryDate' => access_token_parsed.fetch(:expiryDate).to_s,
+             'id' => access_token_parsed.fetch(:id).to_s}
+  return headers
+end
+
 def get_current_basket
   access_json = JSON.generate(@user_token)
-  access_token_parsed = JSON.parse(access_json, :symbolize_names => true)
+  access_token_parsed = parse_json(access_json)
   puts access_token_parsed.fetch(:userId)
   api_auth_host = API_BASE + 'basket/get'
   puts api_auth_host
-  response = HTTParty.get(api_auth_host, :headers => {'userId' => access_token_parsed.fetch(:userId).to_s,
-                                                      'appId' => access_token_parsed.fetch(:appId).to_s,
-                                                      'countryId' => access_token_parsed.fetch(:countryId).to_s,
-                                                      'token' => access_token_parsed.fetch(:token).to_s,
-                                                      'scope' => access_token_parsed.fetch(:scope).to_s,
-                                                      'expiryDate' => access_token_parsed.fetch(:expiryDate).to_s,
-                                                      'id' => access_token_parsed.fetch(:id).to_s})
+ headers = build_headers(@user_token)
+  response = HTTParty.get(api_auth_host, :headers => headers)
   return response
 end
 
 def remove_item_from_basket(line_id)
   access_json = JSON.generate(@user_token)
-  access_token_parsed = JSON.parse(access_json, :symbolize_names => true)
   api_auth_host = API_BASE + 'basket/remove/' + line_id
   puts api_auth_host
-  response = HTTParty.delete(api_auth_host, :headers => {'userId' => access_token_parsed.fetch(:userId).to_s,
-                                                         'appId' => access_token_parsed.fetch(:appId).to_s,
-                                                         'countryId' => access_token_parsed.fetch(:countryId).to_s,
-                                                         'token' => access_token_parsed.fetch(:token).to_s,
-                                                         'scope' => access_token_parsed.fetch(:scope).to_s,
-                                                         'expiryDate' => access_token_parsed.fetch(:expiryDate).to_s,
-                                                         'id' => access_token_parsed.fetch(:id).to_s})
+  headers = build_headers(@user_token)
+  response = HTTParty.delete(api_auth_host, :headers => headers)
   return response
-
 end
 
 
@@ -43,7 +46,6 @@ def dump_pairs_for_inspection(json)
   puts '-----------------------'
   puts 'finish inspection'
   puts '===================================='
-
 end
 
 
@@ -60,6 +62,8 @@ end
 
 def request_crawl_on_product(user_token, product_url)
   api_prod_crawl_url = API_BASE + 'products/crawl'
+  puts 'precrawl url end point: ' + api_prod_crawl_url
+  puts 'api end point call payload: ' + 'apiKey=11c91508603f7e2f117e5bcdaa97b16029c2a3d24205926b097b03b47604d726773b2e0f9440180b7e7cfdf17d8903b93b32301fe2503371b8e6aeadf4e14d8b&' + '&url=' + product_url + '&wait=true'
   product_uri  = URI(product_url)
   response = HTTParty.post(api_prod_crawl_url, :body => 'apiKey=11c91508603f7e2f117e5bcdaa97b16029c2a3d24205926b097b03b47604d726773b2e0f9440180b7e7cfdf17d8903b93b32301fe2503371b8e6aeadf4e14d8b&' + '&url=' + product_uri.to_s + '&wait=true')
   @crawl_response = response
@@ -82,64 +86,29 @@ end
 def get_product_json(crawl_data)
   puts 'looking for product in crawl data'
   return get_value_from_json_for_key('product', crawl_data)
- # crawl_data.each do |key, val|
- #   puts "#{key} => #{val}" # prints each key and value.
- #   if key == :product
- #     puts "returning product : " + val.to_s
- #     return val
- #   end
- # end
 end
 
 def get_price_json_from_product(product_json)
  puts 'looking for price in product'
  return get_value_from_json_for_key('price', product_json)
- # product_json.each do |key, val|
- #   puts "#{key} => #{val}" # prints each key and value.
- #   if key == :price
- #     puts "returning price : " + val.to_s
-  #    return val
-  #  end
- # end
 end
 
 def get_currency_json_from_price(price_json)
   puts 'looking for currency in price'
   return get_value_from_json_for_key('currency', price_json)
- # price_json.each do |key, val|
- #   puts "#{key} => #{val}" # prints each key and value.
- #   if key == :currency
- #     puts "returning currency info : " + val.to_s
- #     return val
- #   end
- # end
 end
 
 def get_basket_json(crawl_data)
   puts 'looking for product in crawl data'
   return get_value_from_json_for_key('basket', crawl_data)
-#  crawl_data.each do |key, val|
-#    puts "#{key} => #{val}" # prints each key and value.
-#    if key == :basket
-#      puts "returning product : " + val.to_s
-#      return val
-#    end
-#  end
 end
 
 def get_transaction_json(crawl_data)
   puts 'looking for product in crawl data'
   return get_value_from_json_for_key('transaction', crawl_data)
-  # crawl_data.each do |key, val|
-  #   puts "#{key} => #{val}" # prints each key and value.
-  #   if key == :transaction
-  #     puts "returning product : " + val.to_s
-  #     return val
-  #   end
-  # end
 end
+
 def get_value_from_json_for_key(key_lookup, json)
-  #puts key_lookup
   key_sym = key_lookup.to_sym
   json.each do |key, val|
     # puts "#{key} => #{val}" # prints each key and value.
@@ -178,11 +147,13 @@ end
 
 def get_data_from_request_crawl_on_product(product_url)
   crawl_results = request_crawl_on_product(@user_token, product_url)
-  @parsed_response = JSON.parse(crawl_results.body, :symbolize_names => true)
-  puts @parsed_response
-  pretty_str = JSON.pretty_unparse(@parsed_response)
-  puts pretty_str
+  @parsed_response = parse_json(crawl_results.body)
+  display_parsed_results(@parsed_response)
   return @parsed_response
+end
+
+def display_parsed_results(parsed_results)
+  puts JSON.pretty_unparse(parsed_results)
 end
 
 def get_currency_info_from_response(response)
