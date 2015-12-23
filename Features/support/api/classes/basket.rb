@@ -4,6 +4,6 @@
 # page built from: http://staging.ub.io/basket
 
 class Basket
-require  HTTparty
+include HTTParty
 
 end

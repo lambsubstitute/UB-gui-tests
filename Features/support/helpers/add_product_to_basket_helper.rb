@@ -14,7 +14,7 @@ def add_product_to_basket(product_url)
   end
 
   if @browser.text.include? "out of stock."
-    sleep 1000
+    sleep 10
   end
   puts 'added item to basket, now sleeping for visible check'
   wait_for_basket

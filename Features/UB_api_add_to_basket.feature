@@ -34,3 +34,5 @@ Feature: UB api - add to basket
       | http://www.farfetch.com/uk/shopping/women/dsquared2--skinny-jeans-item-11052231.aspx?storeid=9274&ffref=lp_pic_7_11_                                                                                                                                                       |
 
 
+Scenario: register a new user
+  Given I have a user token
