@@ -99,6 +99,15 @@ Feature: remove item from the basket via the api
     And I remove the item from the basket
     Then my basket should be empty
 
+  @API @api @API_remove_from_basket
+  Scenario: remove item from basket - net-a-porter - uk
+    Given I have a user token
+    And I know the product id for the product "http://www.net-a-porter.com/gb/en/product/651978/saint_laurent/leopard-print-goat-hair-coat"
+    When I request through the api the item is added to the basket
+    And I remove the item from the basket
+    Then my basket should be empty
+
+
 
 
 
