@@ -9,19 +9,20 @@ Feature: remove item from the basket via the api
     And I remove the item from the basket
     Then my basket should be empty
 
-  #Scenario: remove item from basket - Farfetch - FR
-  #  Given I have a user token
-  #  And I know the product id for the product "http://www.farfetch.com/fr/shopping/women/marc-jacobs-shearling-coat-item-11247965.aspx?storeid=9970&ffref=lp_pic_3_2_"
-  #  When I request through the api the item is added to the basket
-  #  And I remove the item from the basket
-  #  Then my basket should be empty
+  Scenario: remove item from basket - Farfetch - FR
+    Given I have a user token
+    And I know the product id for the product "http://www.farfetch.com/fr/shopping/women/marc-jacobs-shearling-coat-item-11247965.aspx?storeid=9970&ffref=lp_pic_3_2_"
+    When I request through the api the item is added to the basket
+    And I remove the item from the basket
+    Then my basket should be empty
 
-  #Scenario: remove item from basket - Farfetch - DE
-  #  Given I have a user token
-  #  And I know the product id for the product "http://www.farfetch.com/de/shopping/women/dsquared2--skinny-jeans-item-11052231.aspx?storeid=9274&ffref=lp_pic_7_11"
-  #  When I request through the api the item is added to the basket
-  #  And I remove the item from the basket
-  #  Then my basket should be empty
+  Scenario: remove item from basket - Farfetch - DE
+    Given I have a user token
+    And I know the product id for the product "http://www.farfetch.com/de/shopping/women/dsquared2--skinny-jeans-item-11052231.aspx?storeid=9274&ffref=lp_pic_7_11"
+    When I request through the api the item is added to the basket
+    And I remove the item from the basket
+    Then my basket should be empty
+
   @API @api @API_remove_from_basket
   Scenario: remove item from basket - BooHoo - de
     Given I have a user token
@@ -29,6 +30,7 @@ Feature: remove item from the basket via the api
     When I request through the api the item is added to the basket
     And I remove the item from the basket
     Then my basket should be empty
+
   @API @api @API_remove_from_basket
   Scenario: remove item from basket - BooHoo - IT
     Given I have a user token
@@ -44,6 +46,7 @@ Feature: remove item from the basket via the api
     When I request through the api the item is added to the basket
     And I remove the item from the basket
     Then my basket should be empty
+
   @API @api @API_remove_from_basket
   Scenario: remove item from basket - Asos - FR
     Given I have a user token
@@ -51,10 +54,11 @@ Feature: remove item from the basket via the api
     When I request through the api the item is added to the basket
     And I remove the item from the basket
     Then my basket should be empty
+
   @API @api @API_remove_from_basket
   Scenario: remove item from basket - Asos - DE
     Given I have a user token
-    And I know the product id for the product "http://www.asos.de/ASOS-Rock-aus-Wildleder-in-A-Linie-mit-Knopfleiste-und-rundgezacktem-Saum/17cu7k/?iid=5126300&abi=1&clr=black&CTAref=Complete+the+Look+Thumb&mporgp=L0FTT1MvQVNPUy1TdWVkZS1BLUxpbmUtU2tpcnQtV2l0aC1CdXR0b24tVGhyb3VnaC1BbmQtU2NhbGxvcGVkLUhlbS9Qcm9kLw."
+    And I know the product id for the product "http://www.asos.de/Reiss-Anna-Bikerjacke-mit-Ziern%C3%A4hten/1965x7/?iid=5958668&cid=2641&Rf-800=550,-1&sh=0&pge=0&pgesize=36&sort=-1&clr=Black&totalstyles=2&gridsize=3&mporgp=L1JlaXNzL1JlaXNzLUFubmEtU2VhbS1EZXRhaWwtQmlrZXItSmFja2V0L1Byb2Qv"
     When I request through the api the item is added to the basket
     And I remove the item from the basket
     Then my basket should be empty
@@ -86,6 +90,15 @@ Feature: remove item from the basket via the api
     When I request through the api the item is added to the basket
     And I remove the item from the basket
     Then my basket should be empty
+
+  @API @api @API_remove_from_basket
+  Scenario: remove item from basket - topshop - uk
+    Given I have a user token
+    And I know the product id for the product "http://www.topshop.com/en/tsuk/product/clothing-427/coats-4680353/darbly-trench-coat-by-unique-4946386?bi=1&ps=20"
+    When I request through the api the item is added to the basket
+    And I remove the item from the basket
+    Then my basket should be empty
+
 
 
 
