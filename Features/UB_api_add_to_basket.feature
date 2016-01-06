@@ -11,14 +11,14 @@ Feature: UB api - add to basket
  #     | product_url                                                                                                          |
  #     | http://www.farfetch.com/uk/shopping/women/dsquared2--skinny-jeans-item-11052231.aspx?storeid=9274&ffref=lp_pic_7_11_ |
 
-  Scenario Outline: remove item from basket
-    Given I have a user token
-    And I know the product id for the product "<product_url>"
-    When I request through the api the item is added to the basket
-    And I remove the item from the basket
-    Then my basket should be empty
-    Examples:
-      | product_url                                                                                                                                                                                                                                                                |
+ # Scenario Outline: remove item from basket
+ #   Given I have a user token
+ #   And I know the product id for the product "<product_url>"
+ #   When I request through the api the item is added to the basket
+ #   And I remove the item from the basket
+ #   Then my basket should be empty
+ #   Examples:
+ #     | product_url                                                                                                                                                                                                                                                                |
      # | http://www.farfetch.com/uk/shopping/women/dsquared2--skinny-jeans-item-11052231.aspx?storeid=9274&ffref=lp_pic_7_11_                                                                                                                                                       |
      # | http://www.farfetch.com/uk/shopping/women/marc-jacobs-shearling-coat-item-11247965.aspx?storeid=9970&ffref=lp_pic_3_2_                                                                                                                                                     |
     #  | https://www.zalando.de/only-jeans-slim-fit-dark-blue-denim-on321a08q-953.html                                                                                                                                                                                              |
