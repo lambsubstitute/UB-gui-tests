@@ -46,3 +46,6 @@ Temporary Items
 .idea/modules.xml
 .idea/*
 .idea/.rakeTasks
+Features/ut
+*.txt
+api_report.html
