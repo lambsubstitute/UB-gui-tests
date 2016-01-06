@@ -17,7 +17,7 @@ When(/^I request through the api the item is added to the basket$/) do
   api_auth_host = API_BASE + 'basket/add/' + @prod_id
   puts api_auth_host
   response = HTTParty.post(api_auth_host, :headers => headers,
-                                          :body => {:productId => @prod_id})
+                           :body => {:productId => @prod_id})
   @response = response
   puts response.body
 end

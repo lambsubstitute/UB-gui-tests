@@ -19,13 +19,12 @@ def get_current_basket
   puts access_token_parsed.fetch(:userId)
   api_auth_host = API_BASE + 'basket/get'
   puts api_auth_host
- headers = build_headers(@user_token)
+  headers = build_headers(@user_token)
   response = HTTParty.get(api_auth_host, :headers => headers)
   return response
 end
 
 def remove_item_from_basket(line_id)
-  access_json = JSON.generate(@user_token)
   api_auth_host = API_BASE + 'basket/remove/' + line_id
   puts api_auth_host
   headers = build_headers(@user_token)
