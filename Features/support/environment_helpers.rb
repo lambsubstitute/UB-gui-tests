@@ -201,16 +201,6 @@ def set_urls()
     @user_cookie_name = 'ubsite..sid'
     @user_cookie_value = 's%3APdGwoQpnocfxbLxWFCaRftJF.BcR4lZNw0xM9ALrX2vJ%2B8ZFoTZOjavEFlu3FKcsvFIA'
     @user_cookie_domain = 'ub.io'
-  elsif ENV['ENVIRONMENT'] == "za"
-    @base_url = ZA_BASE
-  elsif (ENV['ENVIRONMENT'] == "qa1") || (ENV['ENVIRONMENT'] ==  "QA1")
-    @base_url = QA1_BASE
-  elsif (ENV['ENVIRONMENT'] == "qa2") || (ENV['ENVIRONMENT'] == "QA2")
-    @base_url = QA2_BASE                                                            y
-  elsif ENV['ENVIRONMENT'] == "local"
-    @base_url = "http://localhost/"
-  elsif ENV['ENVIRONMENT'] == "beta"
-    @base_url = "http://beta.just-eat.co.uk/"
   elsif ENV['ENVIRONMENT'] != nil
     @base_url = ENV['ENVIRONMENT']
   else
