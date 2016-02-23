@@ -21,7 +21,7 @@ class Basket
     if @browser.text.include? "You haven't added anything to your basket."
       puts 'basket is empty'
     else
-      @browser.div(:class, MAIN_DIV_ID).wait_until_present(20)
+      @browser.div(:class, MAIN_DIV_ID).wait_until_present(40)
     end
   end
 
