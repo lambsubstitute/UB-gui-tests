@@ -58,7 +58,7 @@ Feature: add product to basket
   Scenario: DEFAULT new item
     Given I add the default product to the basket
     And I select a size
-    And I enter the telephone number "07568091557"
+  #  And I enter the telephone number "07568091557"
     And I enter the address "27-31 Clerkenwell Close"
     And I select the address "27 31 Clerkenwell Close"
     And I add the payment card "4111111111111111"

@@ -216,7 +216,7 @@ def select_all_product_attributes
 
       if options_array.size > 2 && exit_flag == false
         puts options_array[1]
-        select.select options_array[1]
+        select.select options_array[1].upcase
         exit_flag = true
       end
     end
@@ -247,7 +247,7 @@ def add_payment_card(card_number)
   @browser.text_field(:id, 'number').click
   @browser.text_field(:id, 'number').set card_number
   @browser.text_field(:id, 'expiryDate').set '1220'
-  @browser.text_field(:id, 'cvv2').set '111'
+  @browser.text_field(:id, 'cvv2').set '222'
   @browser.text_field(:id, 'name').set 'kw ford'
   @browser.button(:id, 'save-card').click
   wait_while_loading_indicator_present
@@ -281,11 +281,11 @@ def add_address(address_suggest_string)
   @browser.text_field(:id, 'firstname').set 'Auatomation'
   @browser.select(:id, 'title').select 'Mr'
   @browser.text_field(:id, 'lastname').set 'Evangalist'
-  @browser.text_field(:id, 'suggest').set address_suggest_string
-  @browser.link(:text, '27-31, Clerkenwell Close').wait_until_present
+#  @browser.text_field(:id, 'suggest').set address_suggest_string
+#  @browser.link(:text, '27-31, Clerkenwell Close').wait_until_present
   sleep 3
-  @browser.link(:text, '27-31, Clerkenwell Close').wait_until_present
-  @browser.link(:text, '27-31, Clerkenwell Close').click
+#  @browser.link(:text, '27-31, Clerkenwell Close').wait_until_present
+ # @browser.link(:text, '27-31, Clerkenwell Close').click
   @browser.text_field(:id, 'company').wait_until_present
   @browser.text_field(:id, 'company').set 'UB'
   @browser.div(:class, "loading-bg").wait_while_present

@@ -10,7 +10,7 @@ class Basket
   MAIN_DIV_ID = 'ub-basket-contents'
   SHOPTITLE_DIV_CLASS = 'ub-shop'
   PRODUCT_DIV_CLASS = 'ub-product'
- PRODUCT_LI_CLASS = 'ub-product-title'
+  PRODUCT_LI_CLASS = 'ub-product-title'
 
   def get_basket
     wait_for_basket
@@ -18,7 +18,7 @@ class Basket
   end
 
   def wait_for_basket
-    if @browser.text.include?  "You haven't added anything to your basket."
+    if @browser.text.include? "You haven't added anything to your basket."
       puts 'basket is empty'
     else
       @browser.div(:class, MAIN_DIV_ID).wait_until_present(20)
