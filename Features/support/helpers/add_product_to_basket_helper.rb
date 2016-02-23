@@ -123,7 +123,7 @@ def remove_added_addresses
 end
 
 def empty_basket
-  goto_basket
+  #goto_basket
   while (@browser.text.include? "You haven't added anything to your basket.") == false
     wait_while_loading_indicator_present
     exit_flag = false
