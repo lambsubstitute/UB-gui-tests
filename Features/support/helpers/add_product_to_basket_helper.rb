@@ -3,8 +3,13 @@ def add_product_to_basket(product_url)
 
   @browser.goto(@base_url + product_url)
 
+  # because of cookie issue double adding products, this hasto be wrapped because no idea when it will force reload
+  # FUCKING ANNOYING
+  begin
   while (@browser.alert.present? == false) && (@browser.text.include? 'Fetching product details')
     sleep 0.5
+  end
+  rescue
   end
 
   if @browser.alert.present?
@@ -120,6 +125,7 @@ def remove_added_addresses
     end
   rescue
   end
+  wait_while_loading_indicator_present
   goto_basket
 
   puts 'finished removintg addresses'
@@ -150,7 +156,7 @@ def basket_is_empty?
 end
 
 def remove_saved_cards
-  goto_basket
+  #@browser.goto(@base_url + 'basket/choosecard')
   payments_div = nil
   @browser.divs.each do |div|
     if div.label(:text, 'Payment').exist?
@@ -163,6 +169,7 @@ def remove_saved_cards
   if payments_div.span(:text, /1111/).present?
     payments_div.span(:text, /1111/).click
   end
+ # @browser.goto(@base_url + 'basket/choosecard')
   begin
     @browser.links.each do |link|
       if link.attribute_value('class') == 'ub-list-action'
@@ -173,6 +180,7 @@ def remove_saved_cards
   rescue
   end
   puts 'finsihed removing saved cards'
+  wait_while_loading_indicator_present
   goto_basket
 end
 
@@ -279,10 +287,8 @@ end
 
 def add_payment_card(card_number)
   wait_while_loading_indicator_present
-  @browser.span(:text, '+ Add Payment Card').wait_until_present
-  wait_while_loading_indicator_present
-  @browser.span(:text, '+ Add Payment Card').click
-
+  #@browser.span(:text, '+ Add Payment Card').wait_until_present
+  @browser.goto(@base_url + 'user/card/new?back=/basket&basket=true')
   @browser.text_field(:id, 'number').wait_until_present
   @browser.text_field(:id, 'number').click
   @browser.text_field(:id, 'number').set card_number
@@ -310,14 +316,9 @@ end
 def add_address(address_suggest_string)
   wait_for_checkout_button
   wait_while_loading_indicator_present
-  @browser.span(:text, '+ Add Delivery Address').wait_until_present
+ # @browser.span(:text, '+ Add Delivery Address').wait_until_present
+  @browser.goto(@base_url  + 'user/address/new?back=/basket&basket=true')
 
-
-  @browser.send_keys :space
-  @browser.send_keys :space
-  sleep 0.5
-
-  @browser.span(:text, '+ Add Delivery Address').click
   @browser.text_field(:id, 'firstname').wait_until_present
   @browser.text_field(:id, 'firstname').set 'Auatomation'
   @browser.select(:id, 'title').select 'Mr'
@@ -332,6 +333,7 @@ def add_address(address_suggest_string)
   #sleep 1000000
   @browser.button(:text, /SAVE ADDRESS/).click
   @clean_address_flag = true
+  wait_while_loading_indicator_present
 end
 
 def click_continue
