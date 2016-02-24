@@ -14,7 +14,7 @@ def add_product_to_basket(product_url)
       assert false, 'check the VPN as the country might not have any workers for: ' + @country
     end
   end
-
+  sleep 3
   if @browser.text.include? 'out of stock.'
     sleep 10
   end
@@ -89,6 +89,7 @@ def login_with_phone_number(phnone_no)
 end
 
 def remove_added_addresses
+  goto_basket
   delivery_div = nil
   @browser.divs.each do |div|
     if div.label(:text, 'Delivery').exist?
@@ -149,6 +150,7 @@ def basket_is_empty?
 end
 
 def remove_saved_cards
+  goto_basket
   payments_div = nil
   @browser.divs.each do |div|
     if div.label(:text, 'Payment').exist?
@@ -178,10 +180,16 @@ def wait_while_loading_indicator_present
   @browser.div(:id, 'ub-loading-indicator').wait_while_present
 end
 
-def checkout_button_is_disabled
+def checkout_button_is_disabled?
   wait_for_checkout_button
   checkout_class = @browser.link(:id, 'checkout').attribute_value('class')
   assert (checkout_class.include? 'disabled'), checkout_class + ' did not contain disabled'
+end
+
+def checkout_button_is_enabled?
+  wait_for_checkout_button
+  checkout_class = @browser.link(:id, 'checkout').attribute_value('class')
+  assert ((checkout_class.include? 'disabled') == false), checkout_class + ' did contain disabled'
 end
 
 
@@ -211,14 +219,24 @@ def select_all_product_attributes
       options_array = Array.new
       options = select.options
       options.each do |option|
-        options_array.push(option.value)
-        puts option.value
+        if option.text.include? 'out of stock'
+          puts 'not entering this option as a selectable option: ' + option.text
+        else
+          options_array.push(option.value)
+          puts option.value
+        end
       end
 
 
       if options_array.size > 2 && exit_flag == false
         puts options_array[1]
-        select.select options_array[1].upcase
+        begin
+          #cant tell if the select option is uppercase or lower case as always displays upper case but wont select with upper case
+          select.select options_array[1].upcase
+        rescue
+          puts ' tryinglower case version as upper case errorer'
+          select.select options_array[1]
+        end
         exit_flag = true
       end
     end
@@ -227,6 +245,7 @@ def select_all_product_attributes
 end
 
 def get_last_active_select_list
+  sleep 1
   basket = Basket.new(@browser)
   product = basket.get_first_product
   select_to_return = nil
@@ -243,6 +262,7 @@ end
 def add_payment_card(card_number)
   wait_while_loading_indicator_present
   @browser.span(:text, '+ Add Payment Card').wait_until_present
+  wait_while_loading_indicator_present
   @browser.span(:text, '+ Add Payment Card').click
 
   @browser.text_field(:id, 'number').wait_until_present
@@ -253,6 +273,7 @@ def add_payment_card(card_number)
   @browser.text_field(:id, 'name').set 'kw ford'
   @browser.button(:id, 'save-card').click
   wait_while_loading_indicator_present
+  @clean_cards_flag = true
 end
 
 def select_address(first_line)

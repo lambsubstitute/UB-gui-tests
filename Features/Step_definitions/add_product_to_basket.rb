@@ -17,8 +17,13 @@ And(/^the item in the basket should have the title "([^"]*)"$/) do |arg|
 end
 
 And(/^the checkout button should be disabled$/) do
-  checkout_button_is_disabled
+  checkout_button_is_disabled?
 end
+
+And(/^the checkout button should be enabled$/) do
+  checkout_button_is_enabled?
+end
+
 
 And(/^I enter the telephone number$/) do
 
@@ -49,7 +54,23 @@ And(/^I select the address "(.*)"$/) do |arg|
 end
 
 And(/^I select a size$/) do
+  # hack till cookie is fixed addingmultiple items to basket
+  remove_extra_basket_item
+  # todo remove once it stops adding mutliple products that have been assigned the cookie
   select_all_product_attributes
+end
+
+And(/^I select all the attributes$/) do
+  # hack till cookie is fixed addingmultiple items to basket
+  remove_extra_basket_item
+  # todo remove once it stops adding mutliple products that have been assigned the cookie
+  select_all_product_attributes
+end
+
+
+def remove_extra_basket_item
+  @browser.link(:class, 'remove-item needsclick').click
+  sleep 4
 end
 
 When(/^I complete the purchase$/) do

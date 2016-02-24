@@ -54,7 +54,8 @@ After do |scenario|
   if scenario.failed?
 
   end
-
+ # @clean_cards_flag = true
+#  @clean_address_flag = true
 
   if @add_product == true
     if @clean_cards_flag == true
