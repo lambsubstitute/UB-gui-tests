@@ -7,7 +7,6 @@ include Test::Unit::Assertions
 require 'selenium-webdriver'
 require 'rubygems'
 require 'watir-webdriver-performance'
-#include HTTParty
 require 'HTTParty'
 
 
@@ -20,14 +19,7 @@ Before do |scenario|
   debug_output("ORIENTATION = #{ ENV['ORIENTATION']}")
   debug_output("REBASE      = #{ ENV['REBASE']}")
   debug_output("ENVIRONMENT = #{ ENV['ENVIRONMENT']}")
-
   start_browser(scenario)
-  # @browser.goto('http://bbc.com')
-  # @browser.goto(@base_url)
-  # add_product_to_basket('http://www.asos.com/pgeproduct.aspx?iid=5039473&CTARef=Basket+Page&r=2')
-  # remove_saved_cards
-  # remove_added_addresses
-  # empty_basket
 end
 
 def debug_output(output)
@@ -36,11 +28,9 @@ end
 
 
 def start_browser(scenario)
-  #puts VISA
   browser = nil
   count = 0
   while browser == nil
-    #begin
     if ENV['BROWSER'].include? "firefox"
       puts "tryng to start the mother fucking firefox"
       browser = start_firefox(scenario)
@@ -61,27 +51,18 @@ def start_browser(scenario)
 end
 
 After do |scenario|
-  #if scenario.failed?
-  #takeFailedScenarioScreenshot(scenario)
-  #end
   if scenario.failed?
-    #check_console_log
- #   getLog('chrome')
+
   end
+
+
   if @add_product == true
-    if @country == nil
-      #add_product_to_basket(DEFAULT_PRODUCT)
-    elsif @country == 'de'
-      #add_product_to_basket(DEFAULT_DE_PRODUCT)
-    elsif @country == 'fr'
-      #add_product_to_basket(DEFAULT_FR_PRODUCT)
-    elsif @country == 'it'
-      #add_product_to_basket(DEFAULT_IT_PRODUCT)
-    elsif @country == 'uk'
-      #add_product_to_basket(DEFAULT_PRODUCT)
+    if @clean_cards_flag == true
+      remove_saved_cards
     end
-  #  remove_saved_cards
-  #  remove_added_addresses
+    if @clean_address_flag == true
+      remove_added_addresses
+    end
     empty_basket
   end
   @browser.close

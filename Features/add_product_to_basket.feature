@@ -12,12 +12,12 @@ Feature: add product to basket
     And the checkout button should be disabled
 
 
-  Scenario: complete purchase non outlien
-    Given I add the product "http://it.boohoo.com/calzature/dzz97714?zanpid=2112529763012170752&utm_source=ZanoxIT&utm_medium=affiliates&utm_term=2092734&zanoxprogramid=15645" to the basket
+  Scenario: complete purchase non outline
+    Given I add the product "http://it.boohoo.com/abbigliamento/nuovo-arrivo/dzz91338" to the basket
     And I select a size
   #  And I enter the telephone number "07568091557"
     And I enter the address "27-31 Clerkenwell Close"
-    And I select the address "27 31 Clerkenwell Close"
+   # And I select the address "27 31 Clerkenwell Close"
     And I add the payment card "4111111111111111"
     When I complete the purchase
     Then I should be presented with the wait for confirmation from shop message

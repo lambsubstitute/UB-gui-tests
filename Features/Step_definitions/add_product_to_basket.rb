@@ -8,7 +8,6 @@ Given(/^I add the default product to the basket$/) do
 end
 
 
-
 Then(/^the item in the basket should have the seller "([^"]*)"$/) do |arg|
   item_in_basket_displays_shop(arg)
 end

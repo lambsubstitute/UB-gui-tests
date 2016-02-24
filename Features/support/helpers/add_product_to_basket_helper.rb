@@ -1,6 +1,8 @@
 def add_product_to_basket(product_url)
-  @browser.goto(@base_url)
+  #@browser.goto(@base_url)
+
   @browser.goto(@base_url + product_url)
+
   while (@browser.alert.present? == false) && (@browser.text.include? 'Fetching product details')
     sleep 0.5
   end
@@ -13,7 +15,7 @@ def add_product_to_basket(product_url)
     end
   end
 
-  if @browser.text.include? "out of stock."
+  if @browser.text.include? 'out of stock.'
     sleep 10
   end
   puts 'added item to basket, now sleeping for visible check'
@@ -112,8 +114,8 @@ def remove_added_addresses
 
     address_links.each do |address|
       @browser.goto(address)
-      @browser.link(:text, 'Delete address').wait_until_present
-      @browser.link(:text, 'Delete address').click
+      @browser.link(:text, /DELETE ADDRESS/).wait_until_present
+      @browser.link(:text, /DELETE ADDRESS/).click
     end
   rescue
   end
@@ -281,15 +283,16 @@ def add_address(address_suggest_string)
   @browser.text_field(:id, 'firstname').set 'Auatomation'
   @browser.select(:id, 'title').select 'Mr'
   @browser.text_field(:id, 'lastname').set 'Evangalist'
-#  @browser.text_field(:id, 'suggest').set address_suggest_string
-#  @browser.link(:text, '27-31, Clerkenwell Close').wait_until_present
-  sleep 3
-#  @browser.link(:text, '27-31, Clerkenwell Close').wait_until_present
- # @browser.link(:text, '27-31, Clerkenwell Close').click
+  @browser.text_field(:id, 'line1').set '27-31, Clerkenwell Close'
+  @browser.text_field(:id, 'city').set 'London'
+  @browser.text_field(:id, 'postcode').set 'ec31 5dc'
+  @browser.text_field(:id, 'province').set 'England'
   @browser.text_field(:id, 'company').wait_until_present
   @browser.text_field(:id, 'company').set 'UB'
   @browser.div(:class, "loading-bg").wait_while_present
-  @browser.button(:text, 'Save address').click
+  #sleep 1000000
+  @browser.button(:text, /SAVE ADDRESS/).click
+  @clean_address_flag = true
 end
 
 def click_continue

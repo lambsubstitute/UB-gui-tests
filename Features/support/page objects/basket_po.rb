@@ -22,7 +22,7 @@ class Basket
       puts 'basket is empty'
     else
       while @browser.text.include? 'Checking availability'
-        sleep 0.5
+        sleep 1
       end
         # todo might need to put some code here to cope with the ot of stokc generic error
     end
