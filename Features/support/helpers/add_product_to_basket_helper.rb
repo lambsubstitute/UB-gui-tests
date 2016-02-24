@@ -217,25 +217,43 @@ def select_all_product_attributes
     select = get_last_active_select_list
     if select.nil? == false
       options_array = Array.new
+      options_value_array = Array.new
       options = select.options
       options.each do |option|
         if option.text.include? 'out of stock'
           puts 'not entering this option as a selectable option: ' + option.text
         else
-          options_array.push(option.value)
-          puts option.value
+          options_array.push(option.text)
+          options_value_array.push(option.value)
+          puts 'text:' +  option.text
+          puts 'value:' +  option.value
         end
       end
 
 
       if options_array.size > 2 && exit_flag == false
-        puts options_array[1]
+       # sleep 1000000
+
         begin
           #cant tell if the select option is uppercase or lower case as always displays upper case but wont select with upper case
-          select.select options_array[1].upcase
-        rescue
-          puts ' tryinglower case version as upper case errorer'
+          puts 'trying: ' + options_array[1]
           select.select options_array[1]
+        rescue
+          puts 'FAILED!!'
+          begin
+          puts 'trying: ' +  options_value_array[1]
+          select.select options_value_array[1]
+          rescue
+            puts 'FAILED!!'
+            begin
+            puts 'trying: ' +  options_value_array[1].upcase
+            select.select options_value_array[1].upcase
+            rescue
+              puts 'FAILED!!'
+              puts 'trying: ' + options_array[1].gsub(' ', '').gsub("\n", '')
+              select.select options_array[1].gsub(' ', '').gsub("\n", '')
+            end
+          end
         end
         exit_flag = true
       end
@@ -280,7 +298,7 @@ def select_address(first_line)
   wait_while_loading_indicator_present
   @browser.span(:text, '+ Add Delivery Address').wait_until_present
   wait_while_loading_indicator_present
-  @browser.span(:text, '+ Add Delivery Address').click
+ # @browser.span(:text, '+ Add Delivery Address').click
   address_part = Regexp.new(first_line)
   # address_part_reg = Regexp.new(address_part)
   @browser.link(:text, address_part).wait_until_present

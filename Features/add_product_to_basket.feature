@@ -13,8 +13,7 @@ Feature: add product to basket
 
 
   Scenario: complete purchase non outline
-    Given I add the product "http://www.asos.fr/ASOS-Poncho-oversize-%C3%A0-manches-en-jersey/18s6ty/?iid=5909899&cid=3159&sh=0&pge=0&pgesize=36&sort=-1&clr=Taupe&totalstyles=6415&gridsize=3&mporgp=L0FTT1MvQVNPUy1PdmVyc2l6ZWQtV292ZW4tUG9uY2hvLVdpdGgtSmVyc2V5LVNsZWV2ZXMvUHJvZC8." to the basket
-    And I select a size
+    Given I add the product "http://de.boohoo.com/ausverkauf/azz40734" to the basket
     And I select all the attributes
     And I enter the address "27-31 Clerkenwell Close"
     And I add the payment card "4111111111111111"
@@ -28,7 +27,7 @@ Feature: add product to basket
   @outline
   Scenario Outline: complete purchase
     Given I add the product "<product_url>" to the basket from the country "<country>"
-    And I select a size
+    And I select all the attributes
     And I enter the address "27-31 Clerkenwell Close"
     And I add the payment card "4111111111111111"
     Then the checkout button should be enabled
@@ -39,11 +38,11 @@ Feature: add product to basket
   # And I can see the transaction and failed card emails
     Examples:
     |country  | product_url                                                                                                                                                                                                                                               |
- #   |de | https://www.zalando.de/only-jeans-slim-fit-dark-blue-denim-on321a08q-953.html                                                                                                                                                                             |
-   # |fr | https://www.zalando.fr/boss-orange-nabrilo-echarpe-bo152g00c-c11.html                                                                                                                                                                                     |
+    |de | https://www.zalando.de/only-jeans-slim-fit-dark-blue-denim-on321a08q-953.html                                                                                                                                                                             |
+    |fr | https://www.zalando.fr/boss-orange-nabrilo-echarpe-bo152g00c-c11.html                                                                                                                                                                                     |
     |fr | http://www.asos.fr/ASOS-Poncho-oversize-%C3%A0-manches-en-jersey/18s6ty/?iid=5909899&cid=3159&sh=0&pge=0&pgesize=36&sort=-1&clr=Taupe&totalstyles=6415&gridsize=3&mporgp=L0FTT1MvQVNPUy1PdmVyc2l6ZWQtV292ZW4tUG9uY2hvLVdpdGgtSmVyc2V5LVNsZWV2ZXMvUHJvZC8. |
-  #  |de |http://www.asos.de/ASOS-Rock-aus-Wildleder-in-A-Linie-mit-Knopfleiste-und-rundgezacktem-Saum/17cu7k/?iid=5126300&abi=1&clr=black&CTAref=Complete+the+Look+Thumb&mporgp=L0FTT1MvQVNPUy1TdWVkZS1BLUxpbmUtU2tpcnQtV2l0aC1CdXR0b24tVGhyb3VnaC1BbmQtU2NhbGxvcGVkLUhlbS9Qcm9kLw.|
-  #  |de | http://de.boohoo.com/ausverkauf/azz40734                                                                                                                                                                                                                  |
+    |de |http://www.asos.de/ASOS-Strickkleid-mit-One-Shoulder-Tr%C3%A4ger-in-Metallic/18ufx9/?iid=5628695&cid=18761&sh=0&pge=0&pgesize=36&sort=-1&clr=Pink&totalstyles=1629&gridsize=3&mporgp=L0FTT1MvQVNPUy1EcmVzcy1pbi1Lbml0LXdpdGgtT25lLVNob3VsZGVyLWluLU1ldGFsbGljL1Byb2Qv|
+    |de | http://de.boohoo.com/ausverkauf/azz40734                                                                                                                                                                                                                  |
 
   Scenario: test empty basket clean up method
     Given I add the product "http://www.asos.com/pgeproduct.aspx?iid=5039473&CTARef=Basket+Page&r=2" to the basket
@@ -57,9 +56,7 @@ Feature: add product to basket
   Scenario: DEFAULT new item
     Given I add the default product to the basket
     And I select a size
-  #  And I enter the telephone number "07568091557"
     And I enter the address "27-31 Clerkenwell Close"
-    And I select the address "27 31 Clerkenwell Close"
     And I add the payment card "4111111111111111"
     When I complete the purchase
     Then I should be presented with the wait for confirmation from shop message
