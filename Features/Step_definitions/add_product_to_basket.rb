@@ -49,6 +49,10 @@ And(/^I add the payment card "([^"]*)"$/) do |arg|
   add_payment_card(arg)
 end
 
+And(/^I add the default the payment card$/) do
+  add_default_card
+end
+
 And(/^I select the address "(.*)"$/) do |arg|
   select_address(arg)
 end

@@ -16,7 +16,7 @@ Feature: add product to basket
     Given I add the product "https://www.zalando.de/only-jeans-slim-fit-dark-blue-denim-on321a08q-953.html" to the basket
     And I select all the attributes
     And I enter the address "27-31 Clerkenwell Close"
-    And I add the payment card "4111111111111111"
+    And I add the default the payment card
     Then the checkout button should be enabled
   #  When I complete the purchase                       # disabled this for the time being as it is making actual transactions
   #  Then I should be presented with the wait for confirmation from shop message
@@ -29,7 +29,7 @@ Feature: add product to basket
     Given I add the product "<product_url>" to the basket from the country "<country>"
     And I select all the attributes
     And I enter the address "27-31 Clerkenwell Close"
-    And I add the payment card "4111111111111111"
+    And I add the default the payment card
     Then the checkout button should be enabled
   # When I complete the purchase                       # disabled this for the time being as it is making actual transactions
   # Then I should be presented with the wait for confirmation from shop message

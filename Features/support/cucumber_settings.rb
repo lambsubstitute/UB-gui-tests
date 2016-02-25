@@ -11,6 +11,11 @@ DEFAULT_EMAIL = 'keith.ford+test@ub.io'
 # URL SHORTCUTS
 NEW_ADDRESS_URL = 'user/address/new?back=/basket&basket=true'
 
+# DEFAULT CARD
+DEFAULT_CARD_NUMBER = '4111111111111111'
+DEFAULT_CVV = '111'
+DEFAULT_EXPIRY_DATE = '1220'
+DEFAULT_NAME_ON_CARD = 'Kw ford'
 
 
 DEFAULT_DE_PRODUCT = 'https://www.zalando.de/only-jeans-slim-fit-dark-blue-denim-on321a08q-953.html'

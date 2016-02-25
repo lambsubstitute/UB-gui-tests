@@ -300,6 +300,19 @@ def add_payment_card(card_number)
   @clean_cards_flag = true
 end
 
+def add_default_card
+  wait_while_loading_indicator_present
+  @browser.goto(@base_url + 'user/card/new?back=/basket&basket=true')
+  new_card = NewCard.new(@browser)
+  new_card.add_card_number(DEFAULT_CARD_NUMBER)
+  new_card.add_cvv(DEFAULT_CVV)
+  new_card.add_expiry_date(DEFAULT_EXPIRY_DATE)
+  new_card.add_name(DEFAULT_NAME_ON_CARD)
+  new_card.save_card
+  wait_while_loading_indicator_present
+  @clean_cards_flag = true
+end
+
 def select_address(first_line)
   wait_while_loading_indicator_present
   @browser.span(:text, '+ Add Delivery Address').wait_until_present
