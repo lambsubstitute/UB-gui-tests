@@ -57,6 +57,11 @@ After do |scenario|
  # @clean_cards_flag = true
 #  @clean_address_flag = true
 
+  if @checkout_made_flag = true
+    add_product_to_basket(@product_url)
+  end
+
+
   if @add_product == true
     if @clean_cards_flag == true
       remove_saved_cards

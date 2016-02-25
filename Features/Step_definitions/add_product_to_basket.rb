@@ -83,7 +83,8 @@ end
 
 Given(/^I remove all addresses, cards, items from the basket$/) do
   add_product_to_basket('http://www.asos.com/pgeproduct.aspx?iid=5039473&CTARef=Basket+Page&r=2')
-  login_with_phone_number('07568091557')
+  #login_with_phone_number('07568091557')
+
   remove_saved_cards
   remove_added_addresses
   empty_basket
@@ -114,4 +115,8 @@ end
 Given(/^I add the product "([^"]*)" to the basket from the country "([^"]*)"$/) do |arg1, arg2|
   @country = arg2
   add_product_to_basket(arg1)
+end
+
+def add_default_product_to_basket_for_country(arg)
+
 end

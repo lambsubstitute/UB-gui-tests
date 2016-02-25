@@ -13,13 +13,13 @@ Feature: add product to basket
 
 
   Scenario: complete purchase non outline
-    Given I add the product "https://www.zalando.de/only-jeans-slim-fit-dark-blue-denim-on321a08q-953.html" to the basket
+    Given I add the product "http://www.farfetch.com/uk/shopping/women/dsquared2--skinny-jeans-item-11052231.aspx?storeid=9274&ffref=lp_pic_7_11_" to the basket
     And I select all the attributes
     And I enter the address "27-31 Clerkenwell Close"
     And I add the default the payment card
     Then the checkout button should be enabled
-  #  When I complete the purchase                       # disabled this for the time being as it is making actual transactions
-  #  Then I should be presented with the wait for confirmation from shop message
+    When I complete the purchase
+    Then I should be presented with the wait for confirmation from shop message
   # todo two ways of handling the back end check for thetransaction
   # And the back office app should show the transactions as failed bad card
   # And I can see the transaction and failed card emails
@@ -45,7 +45,7 @@ Feature: add product to basket
     |de | http://de.boohoo.com/ausverkauf/azz40734                                                                                                                                                                                                                  |
 
   Scenario: test empty basket clean up method
-    Given I add the product "http://www.asos.com/pgeproduct.aspx?iid=5039473&CTARef=Basket+Page&r=2" to the basket
+    #Given I add the product "http://www.asos.com/pgeproduct.aspx?iid=5039473&CTARef=Basket+Page&r=2" to the basket
     Given I empty the basket
 
 

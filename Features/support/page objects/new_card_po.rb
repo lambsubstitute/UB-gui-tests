@@ -50,4 +50,8 @@ class NewCard
     new_card_form.button(:id,  SAVE_BUTTON_ID).click
   end
 
+  def goto_new_card_page(base_url)
+    @browser.goto(base_url + NEW_CARD_FORM_URL)
+  end
+
 end

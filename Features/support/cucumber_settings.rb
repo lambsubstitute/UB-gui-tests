@@ -10,6 +10,9 @@ DEFAULT_EMAIL = 'keith.ford+test@ub.io'
 
 # URL SHORTCUTS
 NEW_ADDRESS_URL = 'user/address/new?back=/basket&basket=true'
+NEW_CARD_FORM_URL = 'user/card/new?back=/basket&basket=true'
+ADDRESS_LIST_URL = '/basket/chooseaddress'
+CARD_LIST_URL = '/basket/choosecard'
 
 # DEFAULT CARD
 DEFAULT_CARD_NUMBER = '4111111111111111'

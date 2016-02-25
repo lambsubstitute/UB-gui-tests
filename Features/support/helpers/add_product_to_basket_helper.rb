@@ -1,5 +1,5 @@
 def add_product_to_basket(product_url)
-  #@browser.goto(@base_url)
+  @product_url = product_url
 
   @browser.goto(@base_url + product_url)
 
@@ -95,20 +95,13 @@ end
 
 def remove_added_addresses
   goto_basket
-  delivery_div = nil
-  @browser.divs.each do |div|
-    if div.label(:text, 'Delivery').exist?
-      delivery_div = div
-    end
-  end
-
   puts 'removing addresses'
   begin
     wait_while_loading_indicator_present
     @browser.send_keys :space
     @browser.send_keys :space
 
-    delivery_div.div(:text, /Auatomation Evangalist/).click
+    @browser.link(:href,  ADDRESS_LIST_URL).click
     @browser.div(:class, 'ub-page').wait_until_present
     sleep 1
     address_links = Array.new
@@ -156,19 +149,10 @@ def basket_is_empty?
 end
 
 def remove_saved_cards
-  #@browser.goto(@base_url + 'basket/choosecard')
-  payments_div = nil
-  @browser.divs.each do |div|
-    if div.label(:text, 'Payment').exist?
-      payments_div = div
-    end
-  end
   puts "removing saved cards"
   @browser.send_keys :space
   @browser.send_keys :space
-  if payments_div.span(:text, /1111/).present?
-    payments_div.span(:text, /1111/).click
-  end
+  @browser.link(:href,  CARD_LIST_URL).click
  # @browser.goto(@base_url + 'basket/choosecard')
   begin
     @browser.links.each do |link|
@@ -206,6 +190,7 @@ def complete_purchase
   wait_while_loading_indicator_present
   @browser.link(:id, 'checkout').click
   wait_while_checkout_button_is_present
+  @checkout_made_flag = true
 end
 
 
@@ -287,23 +272,21 @@ end
 
 def add_payment_card(card_number)
   wait_while_loading_indicator_present
-  #@browser.span(:text, '+ Add Payment Card').wait_until_present
-  @browser.goto(@base_url + 'user/card/new?back=/basket&basket=true')
-  @browser.text_field(:id, 'number').wait_until_present
-  @browser.text_field(:id, 'number').click
-  @browser.text_field(:id, 'number').set card_number
-  @browser.text_field(:id, 'expiryDate').set '1220'
-  @browser.text_field(:id, 'cvv2').set '222'
-  @browser.text_field(:id, 'name').set 'kw ford'
-  @browser.button(:id, 'save-card').click
+  new_card = NewCard.new(@browser)
+  new_card.goto_new_card_page(@base_url)
+  new_card.add_card_number(card_number)
+  new_card.add_cvv(DEFAULT_CVV)
+  new_card.add_expiry_date(DEFAULT_EXPIRY_DATE)
+  new_card.add_name(DEFAULT_NAME_ON_CARD)
+  new_card.save_card
   wait_while_loading_indicator_present
   @clean_cards_flag = true
 end
 
 def add_default_card
   wait_while_loading_indicator_present
-  @browser.goto(@base_url + 'user/card/new?back=/basket&basket=true')
   new_card = NewCard.new(@browser)
+  new_card.goto_new_card_page(@base_url)
   new_card.add_card_number(DEFAULT_CARD_NUMBER)
   new_card.add_cvv(DEFAULT_CVV)
   new_card.add_expiry_date(DEFAULT_EXPIRY_DATE)
@@ -327,9 +310,8 @@ end
 def add_address(address_suggest_string)
   wait_for_checkout_button
   wait_while_loading_indicator_present
-  @browser.goto(@base_url  +  NEW_ADDRESS_URL)
-
   new_address = NewAddress.new(@browser)
+  new_address.goto_add_new_address_page(@base_url)
   new_address.add_address_line1('clerkenwell green')
   new_address.add_city('London')
   new_address.select_title('Mr')

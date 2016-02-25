@@ -21,6 +21,10 @@ class NewAddress
 
   TITLE_SELECT_ID = 'title'
 
+  def goto_add_new_address_page(base_url)
+    @browser.goto(base_url  +  NEW_ADDRESS_URL)
+  end
+
   def get_new_address_form
     @browser.div(:class, MAIN_DIV_CLASS).wait_until_present
     @browser.text_field(:id, FIRSTNAME_TEXTFIELD_ID).wait_until_present
