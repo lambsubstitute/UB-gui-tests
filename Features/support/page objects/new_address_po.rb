@@ -32,19 +32,19 @@ class NewAddress
     @browser.text_field(:id, ADDLINE1_TEXTFIELD_ID).set line1
   end
 
-  @browser.goto(@base_url  + 'user/address/new?back=/basket&basket=true')
+#  @browser.goto(@base_url  + 'user/address/new?back=/basket&basket=true')
 
-  @browser.select(:id, 'title').select 'Mr'
+#  @browser.select(:id, 'title').select 'Mr'
 
-  @browser.text_field(:id, 'line1').set '27-31, Clerkenwell Close'
-  @browser.text_field(:id, 'city').set 'London'
-  @browser.text_field(:id, 'postcode').set 'ec31 5dc'
-  @browser.text_field(:id, 'province').set 'England'
-  @browser.text_field(:id, 'company').wait_until_present
-  @browser.text_field(:id, 'company').set 'UB'
-  @browser.div(:class, "loading-bg").wait_while_present
+ # @browser.text_field(:id, 'line1').set '27-31, Clerkenwell Close'
+  #@browser.text_field(:id, 'city').set 'London'
+  #@browser.text_field(:id, 'postcode').set 'ec31 5dc'
+  #@browser.text_field(:id, 'province').set 'England'
+  #@browser.text_field(:id, 'company').wait_until_present
+  #@browser.text_field(:id, 'company').set 'UB'
+  #@browser.div(:class, "loading-bg").wait_while_present
   #sleep 1000000
-  @browser.button(:text, /SAVE ADDRESS/).click
+  #@browser.button(:text, /SAVE ADDRESS/).click
 
 
 
