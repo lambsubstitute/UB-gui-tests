@@ -8,6 +8,9 @@ API_BASE = 'http://api.ub.io/'
 
 DEFAULT_EMAIL = 'keith.ford+test@ub.io'
 
+# URL SHORTCUTS
+NEW_ADDRESS_URL = 'user/address/new?back=/basket&basket=true'
+
 
 
 DEFAULT_DE_PRODUCT = 'https://www.zalando.de/only-jeans-slim-fit-dark-blue-denim-on321a08q-953.html'

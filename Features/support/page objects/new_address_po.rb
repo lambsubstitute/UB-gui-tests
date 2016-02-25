@@ -7,98 +7,84 @@ class NewAddress
   include PageInitializer
 
   # Element identifiers
-  MAIN_DIV_ID = 'ub-basket-contents'
+  MAIN_DIV_CLASS = 'ub-page'
+  COUNTRY_SELECT_ID = 'countryId'
   FIRSTNAME_TEXTFIELD_ID = 'firstname'
   LASTNAME_TEXTFIELD_ID = 'lastname'
   ADDLINE1_TEXTFIELD_ID = 'line1'
+  COMPANY_TEXTFIELD_ID = 'company'
   CITY_TEXTFIELD_ID = 'city'
   COUNTRY_TEXTFIELD_ID = 'province'
   POSTCODE_TEXTFIELD_ID = 'postcode'
 
+  SAVE_BUTTON_REGEX = /SAVE ADDRESS/
+
   TITLE_SELECT_ID = 'title'
 
-  def add_first_name(name)
+  def get_new_address_form
+    @browser.div(:class, MAIN_DIV_CLASS).wait_until_present
     @browser.text_field(:id, FIRSTNAME_TEXTFIELD_ID).wait_until_present
-    @browser.text_field(:id, FIRSTNAME_TEXTFIELD_ID).set name
+    return @browser.div(:class, MAIN_DIV_CLASS)
+  end
+
+  def add_first_name(name)
+    new_address_form = get_new_address_form
+    new_address_form.text_field(:id, FIRSTNAME_TEXTFIELD_ID).set name
   end
 
   def add_last_name(last_name)
-    @browser.text_field(:id, LASTNAME_TEXTFIELD_ID).wait_until_present
-    @browser.text_field(:id, LASTNAME_TEXTFIELD_ID).set last_name
+    new_address_form = get_new_address_form
+    new_address_form.text_field(:id, LASTNAME_TEXTFIELD_ID).set last_name
   end
 
   def add_address_line1(line1)
-    @browser.text_field(:id, ADDLINE1_TEXTFIELD_ID).wait_until_present
-    @browser.text_field(:id, ADDLINE1_TEXTFIELD_ID).set line1
+    new_address_form = get_new_address_form
+    new_address_form.text_field(:id, ADDLINE1_TEXTFIELD_ID).set line1
   end
 
-#  @browser.goto(@base_url  + 'user/address/new?back=/basket&basket=true')
-
-#  @browser.select(:id, 'title').select 'Mr'
-
- # @browser.text_field(:id, 'line1').set '27-31, Clerkenwell Close'
-  #@browser.text_field(:id, 'city').set 'London'
-  #@browser.text_field(:id, 'postcode').set 'ec31 5dc'
-  #@browser.text_field(:id, 'province').set 'England'
-  #@browser.text_field(:id, 'company').wait_until_present
-  #@browser.text_field(:id, 'company').set 'UB'
-  #@browser.div(:class, "loading-bg").wait_while_present
-  #sleep 1000000
-  #@browser.button(:text, /SAVE ADDRESS/).click
-
-
-
-
-  def get_basket
-    wait_for_basket
-    return @browser.div(:class, MAIN_DIV_ID)
+  def add_company(company)
+    new_address_form = get_new_address_form
+    new_address_form.text_field(:id, COMPANY_TEXTFIELD_ID).set company
   end
 
-  def wait_for_basket
-    if @browser.text.include? "You haven't added anything to your basket."
-      puts 'basket is empty'
-    else
-      while @browser.text.include? 'Checking availability'
-        sleep 1
-      end
-        # todo might need to put some code here to cope with the ot of stokc generic error
-    end
+  def add_city(city)
+    new_address_form = get_new_address_form
+    new_address_form.text_field(:id, CITY_TEXTFIELD_ID).set city
   end
 
-  def get_basket_shop_name
-    basket = get_basket
-    return basket.div(:class, SHOPTITLE_DIV_CLASS).text
+  def add_county(country)
+    new_address_form = get_new_address_form
+    new_address_form.text_field(:id, COUNTRY_TEXTFIELD_ID).set country
   end
 
-  def get_first_product
-    basket = get_basket
-    return basket.div(:class, PRODUCT_DIV_CLASS)
+  def add_postcode(postcode)
+    new_address_form = get_new_address_form
+    new_address_form.text_field(:id, POSTCODE_TEXTFIELD_ID).set postcode
   end
 
-  def get_item_name
-    product = get_first_product
-    return product.li(:class, PRODUCT_LI_CLASS).text
+  def select_title(title)
+    new_address_form = get_new_address_form
+    new_address_form.select(:id, TITLE_SELECT_ID).select title
   end
 
-  def get_first_basket_item_name
-    product = get_first_product
-    return product.li(:class, PRODUCT_LI_CLASS).text
+  def select_country(country)
+    new_address_form = get_new_address_form
+    new_address_form.select(:id, COUNTRY_SELECT_ID).select country
   end
 
-  def basket_present?
-    basket = get_basket
-    return basket.div(:class, PRODUCT_DIV_CLASS).present?
+  def return_available_countries
+    new_address_form = get_new_address_form
+    return new_address_form.select(:id, COUNTRY_SELECT_ID).values
   end
 
-  def get_item_price
-    basket = get_basket
-    return basket.li(:class, 'ub-product-price').text
+  def return_available_titles
+    new_address_form = get_new_address_form
+    return new_address_form.select(:id, TITLE_SELECT_ID).values
   end
 
-  def get_totals_price
-    basket = get_basket
-    return basket.div(:class, 'ub-total-container').text
+  def save_address
+    new_address_form = get_new_address_form
+    new_address_form.button(:text,  SAVE_BUTTON_REGEX).click
   end
-
 
 end

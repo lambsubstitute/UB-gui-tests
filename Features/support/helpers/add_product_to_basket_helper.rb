@@ -304,34 +304,29 @@ def select_address(first_line)
   wait_while_loading_indicator_present
   @browser.span(:text, '+ Add Delivery Address').wait_until_present
   wait_while_loading_indicator_present
- # @browser.span(:text, '+ Add Delivery Address').click
   address_part = Regexp.new(first_line)
-  # address_part_reg = Regexp.new(address_part)
   @browser.link(:text, address_part).wait_until_present
   @browser.link(:text, address_part).click
-  @browser.div(:id, 'ub-loading-indicator').wait_while_present
+  wait_while_loading_indicator_present
 end
 
 
 def add_address(address_suggest_string)
   wait_for_checkout_button
   wait_while_loading_indicator_present
- # @browser.span(:text, '+ Add Delivery Address').wait_until_present
-  @browser.goto(@base_url  + 'user/address/new?back=/basket&basket=true')
+  @browser.goto(@base_url  +  NEW_ADDRESS_URL)
 
-  @browser.text_field(:id, 'firstname').wait_until_present
-  @browser.text_field(:id, 'firstname').set 'Auatomation'
-  @browser.select(:id, 'title').select 'Mr'
-  @browser.text_field(:id, 'lastname').set 'Evangalist'
-  @browser.text_field(:id, 'line1').set '27-31, Clerkenwell Close'
-  @browser.text_field(:id, 'city').set 'London'
-  @browser.text_field(:id, 'postcode').set 'ec31 5dc'
-  @browser.text_field(:id, 'province').set 'England'
-  @browser.text_field(:id, 'company').wait_until_present
-  @browser.text_field(:id, 'company').set 'UB'
-  @browser.div(:class, "loading-bg").wait_while_present
-  #sleep 1000000
-  @browser.button(:text, /SAVE ADDRESS/).click
+  new_address = NewAddress.new(@browser)
+  new_address.add_address_line1('clerkenwell green')
+  new_address.add_city('London')
+  new_address.select_title('Mr')
+  new_address.add_company('UB')
+  new_address.add_first_name('Automation')
+  new_address.add_last_name('Evangalist')
+  new_address.add_county('England')
+  new_address.add_postcode('ec31 5dc')
+  wait_while_loading_indicator_present
+  new_address.save_address
   @clean_address_flag = true
   wait_while_loading_indicator_present
 end
