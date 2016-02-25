@@ -61,7 +61,6 @@ And(/^I select a size$/) do
 end
 
 And(/^I select all the attributes$/) do
-  #sleep 100000
   # hack till cookie is fixed addingmultiple items to basket
   remove_extra_basket_item
   # todo remove once it stops adding mutliple products that have been assigned the cookie
