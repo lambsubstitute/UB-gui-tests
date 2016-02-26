@@ -16,7 +16,7 @@ end
 
 Then(/^I should see the basket$/) do
   basket = Basket.new(@browser)
-  assert basket.basket_present?
+  assert basket.basket_present?, 'basket was not present, check for oos message'
 end
 
 Given(/^I add a uk user cookie$/) do

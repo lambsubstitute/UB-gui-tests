@@ -82,7 +82,7 @@ When(/^I complete the purchase$/) do
 end
 
 Given(/^I remove all addresses, cards, items from the basket$/) do
-  add_product_to_basket('http://www.asos.com/pgeproduct.aspx?iid=5039473&CTARef=Basket+Page&r=2')
+  add_product_to_basket('http://it.boohoo.com/abbigliamento/nuovo-arrivo/dzz91338')
   #login_with_phone_number('07568091557')
 
   remove_saved_cards

@@ -6,14 +6,14 @@ Feature: add product to basket
 
   @TEST
   Scenario: add a product to the basket
-    When I add the product "http://www.asos.com/pgeproduct.aspx?iid=5039473&CTARef=Basket+Page&r=2" to the basket
+    When I add the product "http://it.boohoo.com/abbigliamento/nuovo-arrivo/dzz91338" to the basket
     Then the item in the basket should have the seller "asos.com"
     And the item in the basket should have the title "ASOS Coat With Seam Detail In Hairy Wool"
     And the checkout button should be disabled
 
 
   Scenario: complete purchase non outline
-    Given I add the product "http://www.farfetch.com/uk/shopping/women/dsquared2--skinny-jeans-item-11052231.aspx?storeid=9274&ffref=lp_pic_7_11_" to the basket
+    Given I add the product "http://it.boohoo.com/abbigliamento/nuovo-arrivo/dzz91338" to the basket
     And I select all the attributes
     And I enter the address "27-31 Clerkenwell Close"
     And I add the default the payment card
@@ -31,8 +31,8 @@ Feature: add product to basket
     And I enter the address "27-31 Clerkenwell Close"
     And I add the default the payment card
     Then the checkout button should be enabled
-  # When I complete the purchase                       # disabled this for the time being as it is making actual transactions
-  # Then I should be presented with the wait for confirmation from shop message
+    #When I complete the purchase
+    #Then I should be presented with the wait for confirmation from shop message
   # todo two ways of handling the back end check for thetransaction
   # And the back office app should show the transactions as failed bad card
   # And I can see the transaction and failed card emails

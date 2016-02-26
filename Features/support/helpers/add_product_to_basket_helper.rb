@@ -1,3 +1,4 @@
+# encoding: utf-8
 def add_product_to_basket(product_url)
   @product_url = product_url
 
@@ -152,7 +153,7 @@ def remove_saved_cards
   puts "removing saved cards"
   @browser.send_keys :space
   @browser.send_keys :space
-  @browser.link(:href,  CARD_LIST_URL).click
+  @browser.span(:text, '···· 1111').click
  # @browser.goto(@base_url + 'basket/choosecard')
   begin
     @browser.links.each do |link|
