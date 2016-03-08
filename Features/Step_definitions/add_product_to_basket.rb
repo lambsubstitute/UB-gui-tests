@@ -91,6 +91,7 @@ Given(/^I remove all addresses, cards, items from the basket$/) do
 end
 
 Then(/^I should be presented with the wait for confirmation from shop message$/) do
+  sleep 1000000
   @browser.h4(:class, 'ub-subtitle').wait_until_present(120)
   placing_order_page_text = @browser.h4(:class, 'ub-subtitle').text
   puts placing_order_page_text
@@ -103,6 +104,7 @@ Given(/^I have a defined UB cookie$/) do
 end
 
 def add_ub_cookie
+  @browser.goto(@base_url)
   expiry_date = DateTime.new(2016,12,3)
   puts 'adding cookie'
   @browser.cookies.add @user_cookie_name, @user_cookie_value, secure: false, path: '/', expires: expiry_date, domain: @user_cookie_domain

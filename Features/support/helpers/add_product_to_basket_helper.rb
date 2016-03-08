@@ -6,12 +6,12 @@ def add_product_to_basket(product_url)
 
   # because of cookie issue double adding products, this hasto be wrapped because no idea when it will force reload
   # FUCKING ANNOYING
-  begin
+ # begin
   while (@browser.alert.present? == false) && (@browser.text.include? 'Fetching product details')
     sleep 0.5
   end
-  rescue
-  end
+  #rescue
+  #end
 
   if @browser.alert.present?
     puts @browser.alert.text

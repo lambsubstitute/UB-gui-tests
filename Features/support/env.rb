@@ -46,13 +46,13 @@ def start_browser(scenario)
   end
   set_urls
   @browser = browser
-  @browser.goto(@base_url + 'basket')
+ # @browser.goto(@base_url + 'basket')
   @add_product = true
 end
 
 After do |scenario|
   if scenario.failed?
-
+    screenshots(scenario.name.to_s , @browser)
   end
  # @clean_cards_flag = true
 #  @clean_address_flag = true
@@ -77,6 +77,23 @@ end
 at_exit do
 
 end
+
+def screenshots(scenario, browser)
+  # build file name from the scenario name so its easy to identify against a specific test
+  file_name = scenario
+  # remove illegal file name chars
+  file_name = file_name.gsub(' ', '_').gsub('/', ('_'))
+  # make the screenshot directory if it doesnt exist
+  Dir.mkdir('./screenshots') unless File.directory?('./screenshots')
+  puts 'making a screen shot now as #[' + file_name + '_FAILED.png' + ']'
+
+  # version 1 not working in ie with viewing the report, view report in ff for screenshots
+  #window_debug_info
+  browser.screenshot.save(file_name + '_FAILED.png')
+  #end
+  embed(file_name + '_FAILED.png', 'image/png')
+end
+
 
 def check_console_log
   console_log = @browser.driver.manage.get_log(:browser)
