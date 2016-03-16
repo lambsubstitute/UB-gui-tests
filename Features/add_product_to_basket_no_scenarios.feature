@@ -37,10 +37,10 @@ Feature: add product to basket -no scanerios
 
 
   @rt_1_SCENARIO
-  Scenario: add a product to the basket
+  Scenario: add a product to the basket test
     When I add the product "http://tidd.ly/e832ce2e" to the basket
     Then the item in the basket should have the seller "johnlewis.com"
-    And the item in the basket should have the title "Sonos Playbar Home "
+    And the item in the basket should have the title "Sonos Playbar Home"
     And the checkout button should be disabled
 
 
