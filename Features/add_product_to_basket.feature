@@ -37,8 +37,8 @@ Feature: add product to basket
     And I enter the address "27-31 Clerkenwell Close"
     And I add the default the payment card
     Then the checkout button should be enabled
-    #When I complete the purchase
-    #Then I should be presented with the wait for confirmation from shop message
+    When I complete the purchase
+    Then I should be presented with the wait for confirmation from shop message
   # todo two ways of handling the back end check for thetransaction
   # And the back office app should show the transactions as failed bad card
   # And I can see the transaction and failed card emails

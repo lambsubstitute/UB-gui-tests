@@ -1,7 +1,7 @@
 Feature: add product to basket -no scanerios
 
   Background:
-    Given I have a defined UB cookie
+    #Given I have a defined UB cookie
 
   #@rt_1_SCENARIO
   Scenario Outline: add a product to the basket rt1 scenario
@@ -11,7 +11,7 @@ Feature: add product to basket -no scanerios
     And the checkout button should be disabled
     Examples:
       | seller            | product_title                                                         | product_url                                                                                       |
-      | erichersounds.com | HARMAN KARDONBTA10                                                    | http://www.richersounds.com/product/wireless-streaming-accessories/harman-kardon/bta10/harm-bta10 |
+      | richersounds.com | HARMAN KARDONBTA10                                                    | http://www.richersounds.com/product/wireless-streaming-accessories/harman-kardon/bta10/harm-bta10 |
       | richersounds.com  | SOUNDMAGICE10S                                                        | http://www.richersounds.com/product/all-headphones/soundmagic/e10s/soun-e10s                      |
       | johnlewis.com     | Sonos Playbar Home Cinema Sound Bar With Apple Music                  | http://tidd.ly/e832ce2e                                                                           |
       | johnlewis.com     | Sony MDR-EX650 In-Ear Headphones With Mic/Remote, Brass               | http://tidd.ly/c2974c6e                                                                           |
