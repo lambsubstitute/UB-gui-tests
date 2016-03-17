@@ -1,7 +1,7 @@
 Feature: add product to basket -no scanerios
 
   Background:
-    #Given I have a defined UB cookie
+    Given I have a defined UB cookie
 
   #@rt_1_SCENARIO
   Scenario Outline: add a product to the basket rt1 scenario

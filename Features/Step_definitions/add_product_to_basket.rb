@@ -9,6 +9,7 @@ end
 
 
 Then(/^the item in the basket should have the seller "([^"]*)"$/) do |arg|
+
   item_in_basket_displays_shop(arg)
 end
 
@@ -17,6 +18,7 @@ And(/^the item in the basket should have the title "([^"]*)"$/) do |arg|
 end
 
 And(/^the checkout button should be disabled$/) do
+  sleep 10000
   checkout_button_is_disabled?
 end
 
