@@ -17,6 +17,16 @@ end
 Then(/^I should see the basket$/) do
   basket = Basket.new(@browser)
   assert basket.basket_present?, 'basket was not present, check for oos message'
+
+  #sleep 100000
+  # wait for additional attributes
+  puts 'waiting for quick crawl ......'
+  begin
+    @browser.div(:class, 'ub-product-quickcrawl').wait_while_present(180)
+  rescue
+    assert (@browser.div(:class, 'ub-product-quickcrawl').present? == false), 'the quick crawl was still running after 3 minutes, failing'
+  end
+  puts 'finished quick crawl'
 end
 
 Given(/^I add a uk user cookie$/) do
