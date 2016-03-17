@@ -4,7 +4,6 @@ Given(/^the basket is empty with no saved details$/) do
   remove_saved_cards
   remove_added_addresses
   empty_basket
-  sleep 1000000
 end
 
 And(/^it should have an item in it$/) do
