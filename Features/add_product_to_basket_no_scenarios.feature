@@ -44,7 +44,7 @@ Feature: add product to basket -no scanerios
     And the checkout button should be disabled
 
 
-  @rt_1_SCENARIO
+  #@rt_1_SCENARIO
   Scenario: add a product to the basket
     When I add the product "http://tidd.ly/c2974c6e" to the basket
     Then the item in the basket should have the seller "johnlewis.com"
