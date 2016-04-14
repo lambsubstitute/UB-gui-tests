@@ -53,14 +53,14 @@ And(/^the item currency should match the "([^"]*)"$/) do |arg|
   basket = Basket.new(@browser)
   price = basket.get_item_price
   puts price
-  assert price.include? arg
+  assert (price.include? arg), 'the item currency dd not match expected of ' + arg
 end
 
 And(/^the basket subtotals should have the currency "([^"]*)"$/) do |arg|
   basket = Basket.new(@browser)
   totals_price = basket.get_totals_price
   puts totals_price
-  assert totals_price.include? arg
+  assert (totals_price.include? arg), 'the subtotal currency dd not match expected of ' + arg
 end
 
 
